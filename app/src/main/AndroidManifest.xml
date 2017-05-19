@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ziteng.lc.xf">
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name="ziteng.lc.xf.app.App"
+        android:allowBackup="true"
+        android:icon="@mipmap/icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".activity.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.MainActivity"/>
+        <activity android:name=".activity.StatementActivity"/>
+        <activity android:name=".activity.StopProjectActivity"/>
+        <activity android:name=".activity.InformationInputActivity"/>
+        <activity android:name=".activity.ChangPassWordActivity"/>
+        <activity android:name=".activity.RegisterActivity"/>
+        <activity android:name=".activity.ProjectWarnActivity"/>
+        <activity android:name=".activity.InformationEditorActivity"/>
+        <activity android:name=".activity.ProjectMessageActivity"/>
+        <activity android:name=".activity.ProjectLcActivity"/>
+        <activity android:name=".activity.WebViewActivity"/>
+        <activity android:name=".activity.ProjectFlowActivity"/>
+        <activity android:name=".activity.WebViewProjectActivity"/>
+        <activity android:name=".activity.SigningActivity"/>
+        <activity android:name=".activity.LandingProjectActivity"/>
+        <activity android:name=".activity.ManageProjectActivity"/>
+        <activity android:name=".activity.EndManageProjectActivity"/>
+        <activity android:name=".activity.ProjectEditorActivity"/>
+        <activity android:name=".activity.BasicInfoActovity"/>
+        <activity android:name=".activity.ChangPhoneNumberActivity"/>
+        <activity
+            android:name="com.zaaach.citypicker.CityPickerActivity"
+            android:theme="@style/CityPicker.NoActionBar"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name=".activity.StatementOneActivity" />
+        <activity android:name=".activity.StatementTwoActivity" />
+        <activity android:name=".activity.ProjectStatementListActivity" />
+        <activity android:name=".activity.ForgetPasswordActivity" />
+
+    </application>
+
+</manifest>

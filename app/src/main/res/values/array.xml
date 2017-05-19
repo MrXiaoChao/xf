@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="hzfs">
+        <item>是</item>
+        <item>否</item>
+    </string-array>
+
+    <string-array name="xmlx">
+        <item>工业</item>
+        <item>农业</item>
+        <item>服务业</item>
+        <item>旅游业</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="cylb">
+        <item>新材料</item>
+        <item>新能源汽车配件</item>
+        <item>汽车及配件</item>
+        <item>摩托车及配件</item>
+        <item>电子信息</item>
+        <item>节能环保</item>
+        <item>装备制造</item>
+        <item>生命科学</item>
+        <item>石油化工</item>
+        <item>精细化工</item>
+        <item>仓储物流</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="city">
+        <item>北京</item>
+        <item>天津</item>
+        <item>上海</item>
+        <item>河北</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="xmbz">
+        <item>全球500强</item>
+        <item>全国500强</item>
+        <item>央企</item>
+        <item>上市公司</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="hzlb">
+        <item>鼓励类</item>
+        <item>允许类</item>
+        <item>限制类</item>
+    </string-array>
+
+
+    <string-array name="enter">
+        <item>个人登录</item>
+        <item>社会团体</item>
+        <item>政府部门</item>
+    </string-array>
+
+    <string-array name="register">
+        <item>个人注册</item>
+        <item>社会团体</item>
+    </string-array>
+
+</resources>

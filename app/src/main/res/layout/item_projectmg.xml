@@ -1,0 +1,67 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+        <RelativeLayout
+            android:layout_marginLeft="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:maxEms="15"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:id="@+id/item_tvtatil"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/bigtextsize"
+                android:textSize="16sp"
+                android:text="1~ 开发区智慧城市数据园区中心项目"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:layout_marginRight="55dp"
+                android:layout_marginBottom="8dp"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:maxEms="8"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:id="@+id/item_tvcompany"
+                    android:textSize="13sp"
+                    android:textColor="@color/midtextsize"
+                    android:layout_marginLeft="24dp"
+                    android:text="北京某某科技公司"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/item_tvtime"
+                    android:textSize="13sp"
+                    android:textColor="@color/midtextsize"
+                    android:layout_alignParentRight="true"
+                    android:text="2017-03-23"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_marginRight="12dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/qw"
+            android:layout_width="15dp"
+            android:layout_height="15dp" />
+    </RelativeLayout>
+
+</LinearLayout>
