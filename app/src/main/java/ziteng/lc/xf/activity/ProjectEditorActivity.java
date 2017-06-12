@@ -77,6 +77,7 @@ public class ProjectEditorActivity extends BaseActivity {
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             Intent intent = new Intent(ProjectEditorActivity.this, InformationEditorActivity.class);
                             intent.putExtra("project_id", response.getProjectList().get(position).getProject_id());
+                            intent.putExtra("project_status",response.getProjectList().get(position).getProject_status());
                             startActivity(intent);
                         }
                     });
