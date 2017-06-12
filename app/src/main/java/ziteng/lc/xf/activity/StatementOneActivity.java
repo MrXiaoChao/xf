@@ -64,7 +64,8 @@ public class StatementOneActivity extends BaseActivity {
                     } else {
                         Intent intent2 = new Intent(StatementOneActivity.this, ProjectStatementListActivity.class);
                         intent2.putExtra("flag",true);
-                        intent2.putExtra("classifyName", projectStatement.getClassifyName());
+                        intent2.putExtra("classifyName", projectStatement.getSubclassification().get(position).getClassifyName());
+                        intent2.putExtra("classifyName2", projectStatement.getClassifyName());
                         intent2.putExtra("mark", projectStatement.getSubclassification().get(position).getMark());
                         startActivity(intent2);
                     }

@@ -68,6 +68,11 @@ public class HomePageFragment extends BaseFragment {
     private String personuuid;
     private String count;
     private QBadgeView badgeView;
+    private LinearLayout warn;
+    private LinearLayout statement;
+    private View view_warn;
+    private View view_stament;
+    private View view_flow;
 
     @Override
     protected int getLayoutId() {
@@ -216,8 +221,11 @@ public class HomePageFragment extends BaseFragment {
         Glide.with(getActivity()).load(R.mipmap.banner).into(ivBanner);
         LinearLayout news = (LinearLayout) headerView.findViewById(R.id.ll_news);
         LinearLayout flows = (LinearLayout) headerView.findViewById(R.id.ll_following);
-        LinearLayout warn = (LinearLayout) headerView.findViewById(R.id.ll_warn);
-        LinearLayout statement = (LinearLayout) headerView.findViewById(R.id.ll_statement);
+        warn = (LinearLayout) headerView.findViewById(R.id.ll_warn);
+        statement = (LinearLayout) headerView.findViewById(R.id.ll_statement);
+        view_warn = headerView.findViewById(R.id.view_warn);
+        view_stament = headerView.findViewById(R.id.view_stament);
+        view_flow = headerView.findViewById(R.id.view_flow);
         LinearLayout llHeardview = (LinearLayout) headerView.findViewById(R.id.ll_heardview);
         llHeardview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,8 +266,23 @@ public class HomePageFragment extends BaseFragment {
         badgeView = new QBadgeView(getActivity());
         badgeView.bindTarget(warn);
         badgeView.setBadgeGravity(Gravity.END | Gravity.TOP).setGravityOffset(-6, false).setBadgeTextSize(24, false);
-    }
 
+        getStatus();
+    }
+    //获取权限并且根据权限显示模块
+    private void getStatus() {
+        //status 1：个人账号2：企业账号3：责任单位4：管理员5：领导
+        int status = (int) SPUtils.get(getActivity(), "status",1);
+        if (!EmptyUtils.isEmpty(status)) {
+            if (status == 1 || status == 2) {
+                warn.setVisibility(View.GONE);
+                statement.setVisibility(View.GONE);
+                view_warn.setVisibility(View.GONE);
+                view_stament.setVisibility(View.GONE);
+                view_flow.setVisibility(View.GONE);
+            }
+        }
+    }
     //获取未读数据的条目
     private void getReadCount(final String personuuid) {
 

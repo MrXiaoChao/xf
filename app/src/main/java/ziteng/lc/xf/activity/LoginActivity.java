@@ -131,19 +131,23 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onResponse(UserInfo response) {
                 if (response.isIssuccess()) {
+                    String personuuid = response.getPersonuuid();
+                    String phone = response.getPhone();
+                    String idCard = response.getIdcard();
+                    String name = response.getName();
+                    String usename = response.getUsername();
+                    String org_name = response.getOrg_name();
+                    //status 1：个人账号2：企业账号3：责任单位4：管理员5：领导
+                    int status=response.getStatus();
                     if (sp == 3) {
                         if (response.getStatus() == 3 || response.getStatus() == 4 || response.getStatus() == 5) {
-                            String personuuid = response.getPersonuuid();
-                            String phone = response.getPhone();
-                            String idCard = response.getIdcard();
-                            String name = response.getName();
-                            String usename = response.getUsername();
-
                             SPUtils.put(LoginActivity.this, "personuuid", personuuid);
                             SPUtils.put(LoginActivity.this, "phone", phone);
                             SPUtils.put(LoginActivity.this, "idcard", idCard);
                             SPUtils.put(LoginActivity.this, "name", name);
                             SPUtils.put(LoginActivity.this, "usename", usename);
+                            SPUtils.put(LoginActivity.this, "org_name", org_name);
+                            SPUtils.put(LoginActivity.this,"status",status);
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                         } else {
@@ -151,18 +155,13 @@ public class LoginActivity extends BaseActivity {
                         }
                     } else {
                         if (sp == response.getStatus()) {
-                            String personuuid = response.getPersonuuid();
-                            String phone = response.getPhone();
-                            String idCard = response.getIdcard();
-                            String name = response.getName();
-                            String usename = response.getUsername();
-
                             SPUtils.put(LoginActivity.this, "personuuid", personuuid);
                             SPUtils.put(LoginActivity.this, "phone", phone);
                             SPUtils.put(LoginActivity.this, "idcard", idCard);
                             SPUtils.put(LoginActivity.this, "name", name);
                             SPUtils.put(LoginActivity.this, "usename", usename);
-                            SPUtils.put(LoginActivity.this, "personuuid", personuuid);
+                            SPUtils.put(LoginActivity.this, "org_name", org_name);
+                            SPUtils.put(LoginActivity.this,"status",status);
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                         } else {

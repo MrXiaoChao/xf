@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.utils.EmptyUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -20,6 +22,7 @@ import ziteng.lc.xf.activity.ChangPassWordActivity;
 import ziteng.lc.xf.activity.LoginActivity;
 import ziteng.lc.xf.base.BaseFragment;
 import ziteng.lc.xf.widegt.MyDialog;
+import ziteng.lc.xf.widegt.SPUtils;
 
 /**
  * Created by luochao on 2017/3/20.
@@ -37,6 +40,14 @@ public class MineFragment extends BaseFragment {
     RelativeLayout rlLoginout;
     @BindView(R.id.rl_mine)
     RelativeLayout rlMine;
+    @BindView(R.id.tv_name)
+    TextView tvName;
+    @BindView(R.id.tv_orgname)
+    TextView tvOrgname;
+    @BindView(R.id.iv2_left)
+    ImageView iv2Left;
+    private String org_name;
+    private String name;
 
 
     @Override
@@ -46,19 +57,28 @@ public class MineFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        initview();
-    }
-
-    private void initview() {
         tvTooltarTitle.setText("我  的");
         ivToolbarBack.setVisibility(View.GONE);
+        setText();
     }
 
-    @OnClick({R.id.rl_password, R.id.rl_loginout,R.id.rl_mine})
+    //设置个人信息
+    private void setText() {
+        name = (String) SPUtils.get(getActivity(),"name","");
+        org_name = (String) SPUtils.get(getActivity(),"org_name","");
+        if (!EmptyUtils.isEmpty(org_name)) {
+           tvOrgname.setText(org_name);
+        }
+        if (!EmptyUtils.isEmpty(name)){
+            tvName.setText(name);
+        }
+    }
+
+    @OnClick({R.id.rl_password, R.id.rl_loginout, R.id.rl_mine})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_mine:
-                Intent intent1=new Intent(getActivity(), BasicInfoActovity.class);
+                Intent intent1 = new Intent(getActivity(), BasicInfoActovity.class);
                 startActivity(intent1);
                 break;
             case R.id.rl_password:

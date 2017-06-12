@@ -135,6 +135,7 @@ public class InformationEditorActivity extends BaseActivity {
 
     private static final int REQUEST_CODE_PICK_CITY = 0;
     private String project_id;
+    private String project_status;
 
 
     @Override
@@ -152,8 +153,60 @@ public class InformationEditorActivity extends BaseActivity {
         getSscy();
         changSpinnerText();
         getSpinnerSelect();
-        project_id = getIntent().getStringExtra("project_id");
+        getStringforintent();
         getDataFromSerVice(project_id);
+    }
+
+    //获取上一个页面传过来的值
+    private void getStringforintent() {
+        Intent intent = getIntent();
+        project_id = intent.getStringExtra("project_id");
+        project_status = intent.getStringExtra("project_status");
+
+        //根据传过来的project_status设置权限 1:录入未签约 2:签约 3:完成  (项目签约后不能修改,以此字段来区分)
+        //要求，项目状态只有在“未签约”时才能修改；其他状态下只能查看内容，不能进行修改，（要去掉 保存 按钮，内容为只读状态）
+        if (!project_status.equals("1")) {
+            setEditextToEnabled(projectName,false);
+            setEditextToEnabled(orgName,false);
+            setEditextToEnabled(name,false);
+            setEditextToEnabled(phone,false);
+            setEditextToEnabled(email,false);
+            btnSave.setVisibility(View.GONE);
+            setEditextToEnabled(projectDescrip,false);
+            setEditextToEnabled(situations,false);
+            setEditextToEnabled(invest,false);
+            setEditextToEnabled(floorArea,false);
+            setEditextToEnabled(siteArea,false);
+            setEditextToEnabled(intensity,false);
+            setEditextToEnabled(cycle,false);
+            setEditextToEnabled(yearOutput,false);
+            setEditextToEnabled(taxContribution,false);
+            setEditextToEnabled(employmentPull,false);
+            setSpinnerToEnabled(spHefs,false);
+            setSpinnerToEnabled(spXmlx,false);
+            setSpinnerToEnabled(spCylb,false);
+            setSpinnerToEnabled(spXmbz,false);
+            setSpinnerToEnabled(sp_Hzlb,false);
+            tvDate.setFocusable(false);
+            tvDate.setFocusableInTouchMode(false);
+            tvDate.setEnabled(false);
+            tvCity.setFocusable(false);
+            tvCity.setFocusableInTouchMode(false);
+            tvCity.setEnabled(false);
+        }
+    }
+    //Editext设置不可以编辑
+    public void setEditextToEnabled(EditText editext,boolean t){
+        editext.setFocusable(t);
+        editext.setFocusableInTouchMode(t);
+        editext.setEnabled(t);
+    }
+
+    //Editext设置不可以编辑
+    public void setSpinnerToEnabled(Spinner Spinner,boolean t){
+        Spinner.setFocusable(t);
+        Spinner.setFocusableInTouchMode(t);
+        Spinner.setEnabled(t);
     }
 
     //修改Spinner默认字体的大小与颜色
@@ -409,106 +462,106 @@ public class InformationEditorActivity extends BaseActivity {
                 break;
             case R.id.btn_save:
                 //项目名称
-                    if (!projectName.getText().toString().trim().isEmpty()) {
-                        projectName1 = projectName.getText().toString().trim();
-                    } else {
-                        projectName1 = (String) projectName.getHint();
-                    }
+                if (!projectName.getText().toString().trim().isEmpty()) {
+                    projectName1 = projectName.getText().toString().trim();
+                } else {
+                    projectName1 = (String) projectName.getHint();
+                }
 
                 //企业名称
-                    if (!orgName.getText().toString().trim().isEmpty()) {
-                        orgName1 = orgName.getText().toString().trim();
-                    } else {
-                        orgName1 = (String) orgName.getHint();
-                    }
+                if (!orgName.getText().toString().trim().isEmpty()) {
+                    orgName1 = orgName.getText().toString().trim();
+                } else {
+                    orgName1 = (String) orgName.getHint();
+                }
 
                 //姓名
-                    if (!name.getText().toString().trim().isEmpty()) {
-                        name1= name.getText().toString().trim();
-                    } else {
-                        name1 = (String) name.getHint();
-                    }
+                if (!name.getText().toString().trim().isEmpty()) {
+                    name1 = name.getText().toString().trim();
+                } else {
+                    name1 = (String) name.getHint();
+                }
 
                 //电话
-                    if (!phone.getText().toString().trim().isEmpty()) {
-                        phone1= phone.getText().toString().trim();
-                    } else {
-                        phone1 = (String) phone.getHint();
-                    }
+                if (!phone.getText().toString().trim().isEmpty()) {
+                    phone1 = phone.getText().toString().trim();
+                } else {
+                    phone1 = (String) phone.getHint();
+                }
 
                 //电子邮箱
-                    if (!email.getText().toString().trim().isEmpty()) {
-                        email1= email.getText().toString().trim();
-                    } else {
-                        email1 = (String) email.getHint();
-                    }
+                if (!email.getText().toString().trim().isEmpty()) {
+                    email1 = email.getText().toString().trim();
+                } else {
+                    email1 = (String) email.getHint();
+                }
                 //总投资
-                    if (!invest.getText().toString().trim().isEmpty()) {
-                        invest1= invest.getText().toString().trim();
-                    } else {
-                        invest1 = (String) invest.getHint();
-                    }
+                if (!invest.getText().toString().trim().isEmpty()) {
+                    invest1 = invest.getText().toString().trim();
+                } else {
+                    invest1 = (String) invest.getHint();
+                }
                 //总占地面积
                 if (!floorArea.getText().toString().trim().isEmpty()) {
-                    floorArea1= floorArea.getText().toString().trim();
+                    floorArea1 = floorArea.getText().toString().trim();
                 } else {
                     floorArea1 = (String) floorArea.getHint();
                 }
 
                 //一期用地面积
                 if (!siteArea.getText().toString().trim().isEmpty()) {
-                    siteArea1= siteArea.getText().toString().trim();
+                    siteArea1 = siteArea.getText().toString().trim();
                 } else {
                     siteArea1 = (String) siteArea.getHint();
                 }
 
                 //投资强度
                 if (!intensity.getText().toString().trim().isEmpty()) {
-                    intensity1= intensity.getText().toString().trim();
+                    intensity1 = intensity.getText().toString().trim();
                 } else {
-                    intensity1 = (String)intensity.getHint();
+                    intensity1 = (String) intensity.getHint();
                 }
 
                 //建设周期
                 if (!cycle.getText().toString().trim().isEmpty()) {
                     cycle1 = cycle.getText().toString().trim();
                 } else {
-                    cycle1  = (String)cycle.getHint();
+                    cycle1 = (String) cycle.getHint();
                 }
 
                 //达产后年产值
                 if (!yearOutput.getText().toString().trim().isEmpty()) {
                     yearOutput1 = yearOutput.getText().toString().trim();
                 } else {
-                    yearOutput1 = (String)yearOutput.getHint();
+                    yearOutput1 = (String) yearOutput.getHint();
                 }
 
                 //年税收贡献
                 if (!taxContribution.getText().toString().trim().isEmpty()) {
                     taxContribution1 = taxContribution.getText().toString().trim();
                 } else {
-                    taxContribution1 = (String)taxContribution.getHint();
+                    taxContribution1 = (String) taxContribution.getHint();
                 }
 
                 //就业拉动
                 if (!employmentPull.getText().toString().trim().isEmpty()) {
                     employmentPull1 = employmentPull.getText().toString().trim();
                 } else {
-                    employmentPull1 = (String)employmentPull.getHint();
+                    employmentPull1 = (String) employmentPull.getHint();
                 }
 
                 //项目概述
                 if (!projectDescrip.getText().toString().trim().isEmpty()) {
                     projectDescrip1 = projectDescrip.getText().toString().trim();
                 } else {
-                    projectDescrip1 = (String)projectDescrip.getHint();
+                    projectDescrip1 = (String) projectDescrip.getHint();
                 }
 
                 //其他情况
                 if (!situations.getText().toString().trim().isEmpty()) {
                     situations1 = situations.getText().toString().trim();
                 } else {
-                    situations1= (String)situations.getHint();
+                    situations1 = (String) situations.getHint();
                 }
 
                 date11 = tvDate.getText().toString().trim();
@@ -556,32 +609,32 @@ public class InformationEditorActivity extends BaseActivity {
 
     //项目信息编辑之后提交至服务器
     private void sendInfoToService() {
-            Map<String, String> map = new HashMap<>();
-            map.put("project_id", project_id);
-            map.put("project_name", projectName1);
-            map.put("org_name", orgName1);
-            map.put("cooperation", hefs1);
-            map.put("project_type", xmlx1);
-            map.put("industry", cylb1);
-            map.put("colony", city1);
-            map.put("note", xmbz1);
-            map.put("name", name1);
-            map.put("phone", phone1);
-            map.put("email", email1);
-            map.put("project_descrip", projectDescrip1);
-            map.put("invest", invest1);
-            map.put("floor_area", floorArea1);
-            map.put("site_area", siteArea1);
-            map.put("intensity", intensity1);
-            map.put("expect_date", date11);
-            map.put("cycle", cycle1);
-            map.put("year_output", yearOutput1);
-            map.put("tax_contribution", taxContribution1);
-            map.put("employment_pull", employmentPull1);
-            map.put("category", hzlb1);
-            map.put("product", "");
-            map.put("situations", situations1);
-            map.put("pronotes", pronotes);
+        Map<String, String> map = new HashMap<>();
+        map.put("project_id", project_id);
+        map.put("project_name", projectName1);
+        map.put("org_name", orgName1);
+        map.put("cooperation", hefs1);
+        map.put("project_type", xmlx1);
+        map.put("industry", cylb1);
+        map.put("colony", city1);
+        map.put("note", xmbz1);
+        map.put("name", name1);
+        map.put("phone", phone1);
+        map.put("email", email1);
+        map.put("project_descrip", projectDescrip1);
+        map.put("invest", invest1);
+        map.put("floor_area", floorArea1);
+        map.put("site_area", siteArea1);
+        map.put("intensity", intensity1);
+        map.put("expect_date", date11);
+        map.put("cycle", cycle1);
+        map.put("year_output", yearOutput1);
+        map.put("tax_contribution", taxContribution1);
+        map.put("employment_pull", employmentPull1);
+        map.put("category", hzlb1);
+        map.put("product", "");
+        map.put("situations", situations1);
+        map.put("pronotes", pronotes);
 
         GsonRequest<Success> request = new GsonRequest<Success>(Request.Method.POST, map, Url.InformationProjectEdit, Success.class, new Response.Listener<Success>() {
             @Override

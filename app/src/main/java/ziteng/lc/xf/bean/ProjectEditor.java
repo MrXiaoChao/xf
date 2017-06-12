@@ -9,8 +9,8 @@ import java.util.List;
 public class ProjectEditor {
 
     /**
-     * totalpages : 18
-     * projectList : [{"org_name":"fdsfdsfdsfsd","project_status":"1","project_name":"dsfdsf","project_id":"4028804d5bd30fc4015bd660ba360019","createdate":"2017-05-05","updatedate":"2017-05-05"}]
+     * totalpages : 9
+     * projectList : [{"org_name":"刘雯","project_status":"1","project_name":"刘雯","project_id":"4028804d5c1ab906015c1f7047650018","createdate":"2017-05-19","updatedate":"2017-05-19"},{"org_name":"任丘某某工","project_status":"2","project_name":"测试数据20170519防寒服呵呵","project_id":"4028804d5c1ab906015c1f66491c0016","createdate":"2017-05-19","updatedate":"2017-05-19"}]
      */
 
     private int totalpages;
@@ -34,12 +34,12 @@ public class ProjectEditor {
 
     public static class ProjectListBean {
         /**
-         * org_name : fdsfdsfdsfsd
+         * org_name : 刘雯
          * project_status : 1
-         * project_name : dsfdsf
-         * project_id : 4028804d5bd30fc4015bd660ba360019
-         * createdate : 2017-05-05
-         * updatedate : 2017-05-05
+         * project_name : 刘雯
+         * project_id : 4028804d5c1ab906015c1f7047650018
+         * createdate : 2017-05-19
+         * updatedate : 2017-05-19
          */
 
         private String org_name;

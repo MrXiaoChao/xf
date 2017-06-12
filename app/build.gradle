@@ -16,6 +16,11 @@ android {
         useLibrary 'org.apache.http.legacy'
     }
 
+    lintOptions{
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
     buildTypes {
         release {
             minifyEnabled false

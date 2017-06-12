@@ -1,7 +1,6 @@
 package ziteng.lc.xf.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.blankj.utilcode.utils.StringUtils;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.HashMap;
@@ -19,10 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ziteng.lc.xf.R;
-import ziteng.lc.xf.adapter.ProjectStatementAdapter;
 import ziteng.lc.xf.adapter.ProjectStatementListAdapter;
 import ziteng.lc.xf.app.App;
 import ziteng.lc.xf.base.BaseActivity;
@@ -48,6 +44,7 @@ public class ProjectStatementListActivity extends BaseActivity {
     private String title;
     private boolean flag;
     private String classifyName1;
+    private String classifyName2;
 
     @Override
     protected int getLayout() {
@@ -112,6 +109,7 @@ public class ProjectStatementListActivity extends BaseActivity {
         flag = intent.getBooleanExtra("flag", false);
         classifyName = intent.getStringExtra("classifyName");
         classifyName1 = intent.getStringExtra("classifyName1");
+        classifyName2 = intent.getStringExtra("classifyName2");
         mark = intent.getStringExtra("mark");
         title = intent.getStringExtra("title");
     }
@@ -134,7 +132,7 @@ public class ProjectStatementListActivity extends BaseActivity {
         if (mark != null) {
             if (flag) {
                 //2级页面的请求
-                getDataFromService(classifyName, mark);
+                getDataFromService(classifyName2, mark);
             }else {
                 //3级页面的请求
                 getDataFromService(classifyName1, mark);

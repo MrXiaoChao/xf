@@ -2,176 +2,188 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/backgroundColor">
-    <include layout="@layout/toolbar"/>
+    android:background="@color/backgroundColor"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
 
     <LinearLayout
-        android:background="@mipmap/wd"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="100dp"
+        android:background="@mipmap/wd"
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
-            android:textSize="16sp"
             android:textColor="@color/red"
-            android:text="李晓彤"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:textSize="16sp" />
 
         <TextView
-            android:textColor="@color/textcolor"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:text="任丘市信访局"
-            android:layout_weight="1"
+            android:id="@+id/tv_orgname"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/textcolor"
+            android:textSize="14sp" />
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
-                android:textColor="@color/textcolor"
-                android:textSize="13sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="办公室"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/textcolor"
+                android:textSize="13sp" />
 
             <TextView
-                android:textColor="@color/textcolor"
-                android:textSize="13sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="办公室主任"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/textcolor"
+                android:textSize="13sp" />
 
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/white"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
 
-    <View
-        android:background="@color/divecolor"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divecolor" />
+
         <RelativeLayout
             android:id="@+id/rl_mine"
             android:layout_width="match_parent"
             android:layout_height="50dp">
+
             <ImageView
                 android:id="@+id/iv_mine"
-                android:layout_marginLeft="12dp"
-                android:layout_centerVertical="true"
-                android:background="@mipmap/wd02"
                 android:layout_width="17dp"
-                android:layout_height="17dp" />
-            <ImageView
-                android:layout_marginRight="12dp"
+                android:layout_height="17dp"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:background="@mipmap/qw"
+                android:layout_marginLeft="12dp"
+                android:background="@mipmap/wd02" />
+
+            <ImageView
                 android:layout_width="7dp"
-                android:layout_height="12dp" />
+                android:layout_height="12dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:background="@mipmap/qw" />
+
             <TextView
-                android:textColor="@color/bigtextsize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/iv_mine"
-                android:layout_centerVertical="true"
                 android:text="基本信息"
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/bigtextsize"
+                android:textSize="16sp" />
         </RelativeLayout>
 
         <View
-            android:layout_marginLeft="15dp"
-            android:background="@color/divecolor"
             android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+            android:layout_height="1dp"
+            android:layout_marginLeft="15dp"
+            android:background="@color/divecolor" />
 
-    <RelativeLayout
-        android:id="@+id/rl_password"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-        <ImageView
-            android:id="@+id/iv1_left"
-            android:layout_marginLeft="12dp"
-            android:layout_centerVertical="true"
-            android:background="@mipmap/wd01"
-            android:layout_width="17dp"
-            android:layout_height="17dp" />
-        <ImageView
-            android:layout_marginRight="12dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:background="@mipmap/qw"
-            android:layout_width="7dp"
-            android:layout_height="12dp" />
-        <TextView
-            android:textColor="@color/bigtextsize"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/iv1_left"
-            android:layout_centerVertical="true"
-            android:text="修改密码"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
 
-    <View
-        android:layout_marginLeft="15dp"
-        android:background="@color/divecolor"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+            <ImageView
+                android:id="@+id/iv1_left"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:background="@mipmap/wd01" />
+
+            <ImageView
+                android:layout_width="7dp"
+                android:layout_height="12dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:background="@mipmap/qw" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/iv1_left"
+                android:text="修改密码"
+                android:textColor="@color/bigtextsize"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="15dp"
+            android:background="@color/divecolor" />
 
         <RelativeLayout
             android:id="@+id/rl_loginout"
             android:layout_width="match_parent"
             android:layout_height="50dp">
+
             <ImageView
                 android:id="@+id/iv2_left"
-                android:layout_marginLeft="12dp"
-                android:layout_centerVertical="true"
-                android:background="@mipmap/wd03"
                 android:layout_width="17dp"
-                android:layout_height="17dp" />
-            <ImageView
-                android:layout_marginRight="12dp"
+                android:layout_height="17dp"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:background="@mipmap/qw"
+                android:layout_marginLeft="12dp"
+                android:background="@mipmap/wd03" />
+
+            <ImageView
                 android:layout_width="7dp"
-                android:layout_height="12dp" />
+                android:layout_height="12dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:background="@mipmap/qw" />
+
             <TextView
-                android:textColor="@color/bigtextsize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/iv2_left"
-                android:layout_centerVertical="true"
                 android:text="退出登录"
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/bigtextsize"
+                android:textSize="16sp" />
         </RelativeLayout>
 
         <View
-            android:background="@color/divecolor"
             android:layout_width="match_parent"
-            android:layout_height="1px"/>
+            android:layout_height="1px"
+            android:background="@color/divecolor" />
     </LinearLayout>
 
 </LinearLayout>
