@@ -7,14 +7,28 @@ package ziteng.lc.xf.bean;
 
 public class UserInfo {
 
+    /**
+     * org_name :
+     * phone : 15201339284
+     * pwd : 670b14728ad9902aecba32e22fa4f6bd
+     * username : lc
+     * issuccess : true
+     * status : 1
+     * name : 罗超
+     * role :
+     * org_code :
+     * idcard : 431024199001172713
+     * personuuid : 4028804d5bb2aea4015bcd944f34000c
+     */
+
     private String org_name;
     private String phone;
     private String pwd;
     private String username;
     private boolean issuccess;
-    private int status;
+    private String status;
     private String name;
-    private Object role;
+    private String role;
     private String org_code;
     private String idcard;
     private String personuuid;
@@ -59,11 +73,11 @@ public class UserInfo {
         this.issuccess = issuccess;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -75,11 +89,11 @@ public class UserInfo {
         this.name = name;
     }
 
-    public Object getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Object role) {
+    public void setRole(String role) {
         this.role = role;
     }
 

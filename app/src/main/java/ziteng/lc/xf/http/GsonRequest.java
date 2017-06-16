@@ -7,8 +7,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
@@ -21,7 +28,10 @@ import java.util.Map;
 public class GsonRequest<T> extends Request<T> {
 
     private final Response.Listener<T> mListener;
-    private static Gson mGson = new Gson();
+    private static Gson mGson = new GsonBuilder()
+            .registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory())
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            .create();
     private Class<T> mClass;
     private Map<String, String> mParams;//post Params
     private TypeToken<T> mTypeToken;
@@ -79,6 +89,37 @@ public class GsonRequest<T> extends Request<T> {
     @Override
     protected void deliverResponse(T response) {
         mListener.onResponse(response);
+    }
+
+    //下面3个方法是 解决 Gson 解析null值String，引用没有判断报空指针的问题。
+    public static class NullStringToEmptyAdapterFactory<T> implements TypeAdapterFactory {
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            Class<T> rawType = (Class<T>) type.getRawType();
+            if (rawType != String.class) {
+                return null;
+            }
+            return (TypeAdapter<T>) new StringNullAdapter();
+        }
+    }
+
+    public static class StringNullAdapter extends TypeAdapter<String> {
+        @Override
+        public String read(JsonReader reader) throws IOException {
+            if (reader.peek() == JsonToken.NULL) {
+                reader.nextNull();
+                return "";
+            }
+            return reader.nextString();
+        }
+
+        @Override
+        public void write(JsonWriter writer, String value) throws IOException {
+            if (value == null) {
+                writer.value("");
+                return;
+            }
+            writer.value(value);
+        }
     }
 }
 

@@ -64,4 +64,6 @@ public class Url {
     public static String JIAOYAN_YZM="http://211.151.183.170:8097/rqzsj/person/validateCode?";
     //重置密码
     public static String CHONGZHI_MIMA="http://211.151.183.170:8097/rqzsj/person/resettingPassword?";
+    //获取市领导超期项目
+    public static String SLD="http://211.151.183.170:8097/rqzsj/project/remindAll";
 }

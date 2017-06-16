@@ -7,38 +7,39 @@ package ziteng.lc.xf.bean;
 
 public class ProjectInfoEditext {
 
+
     /**
-     * project_id : 4028804d5b64da0e015b650815220002
-     * project_name : 京华派克项目
-     * org_name : 北京京华派克聚合机械设备有限公司
-     * cooperation : 2
+     * project_id : 4028804d5bae3817015bae92dd780003
+     * project_name : 新能源项目12
+     * org_name : 重庆新能源有限公司
+     * cooperation : 1
      * project_type : 1
-     * industry : 402881e85b61681b015b616a84ce0006
-     * colony : 1
-     * note :
-     * name :
-     * phone :
-     * email :
-     * invest : 25000
-     * floor_area : 50亩
-     * site_area : 50亩
-     * intensity : 300万/亩
-     * expect_date : 1509379200000
-     * cycle : 18个月
-     * year_output : 3.5亿
-     * tax_contribution : 1200万
-     * employment_pull : 100人
+     * industry : 402881e85b61681b015b6169b6920000
+     * colony : 5
+     * note : 央企
+     * name : 张三
+     * phone : 13586542568
+     * email : 13494676467@qq.com
+     * invest : 6000
+     * floor_area : 500
+     * site_area : 100
+     * intensity : 100
+     * expect_date : null
+     * cycle : 15
+     * year_output : 1000
+     * tax_contribution : 45
+     * employment_pull : 4666
      * category : 1
-     * project_descrip : 公司集研发、生产、制造、销售聚氨酯高压无气喷涂（灌注）设备、双组份聚脲高压高温喷涂设备、聚氨酯树脂拉挤注胶设备、双组份聚氨酯淋胶设备、自动化喷涂设备等各种设备于一体，年销售额2亿元以上。该公司，拟在我市新建项目生产基地，预计占地50亩，投资2.5亿元，达产后年产值预计3.5亿人民币，税收1200万，解决当地就业100人。
-     * situations : 项目属国家级高新技术企业，成长性较好。
-     * product : 聚氨酯高压无气喷涂（灌注）设备、双组份聚脲高压高温喷涂设备、聚氨酯树脂拉挤注胶设备、双组份聚氨酯淋胶设备、自动化喷涂设备等各种设备
-     * user_id : 402881e85b5fdd34015b5ffb10480040
-     * project_status : 1
+     * project_descrip : 项目概述
+     * situations : 其他
+     * product : 4
+     * user_id : 402881e85b5fdd34015b5ffd43960048
+     * project_status : 3
      * project_date : null
-     * createdate : 1492048680000
-     * updatedate : 1492048680000
-     * progress :
-     * pronotes : 国家级高新技术企业
+     * createdate : 2017-06-13 15:50:20
+     * updatedate : Tue Jun 13 14:22:28 CST 2017
+     * progress : null
+     * pronotes :
      */
 
     private String project_id;
@@ -56,7 +57,7 @@ public class ProjectInfoEditext {
     private String floor_area;
     private String site_area;
     private String intensity;
-    private long expect_date;
+    private Object expect_date;
     private String cycle;
     private String year_output;
     private String tax_contribution;
@@ -68,9 +69,9 @@ public class ProjectInfoEditext {
     private String user_id;
     private String project_status;
     private Object project_date;
-    private long createdate;
-    private long updatedate;
-    private String progress;
+    private String createdate;
+    private String updatedate;
+    private Object progress;
     private String pronotes;
 
     public String getProject_id() {
@@ -193,11 +194,11 @@ public class ProjectInfoEditext {
         this.intensity = intensity;
     }
 
-    public long getExpect_date() {
+    public Object getExpect_date() {
         return expect_date;
     }
 
-    public void setExpect_date(long expect_date) {
+    public void setExpect_date(Object expect_date) {
         this.expect_date = expect_date;
     }
 
@@ -289,27 +290,27 @@ public class ProjectInfoEditext {
         this.project_date = project_date;
     }
 
-    public long getCreatedate() {
+    public String getCreatedate() {
         return createdate;
     }
 
-    public void setCreatedate(long createdate) {
+    public void setCreatedate(String createdate) {
         this.createdate = createdate;
     }
 
-    public long getUpdatedate() {
+    public String getUpdatedate() {
         return updatedate;
     }
 
-    public void setUpdatedate(long updatedate) {
+    public void setUpdatedate(String updatedate) {
         this.updatedate = updatedate;
     }
 
-    public String getProgress() {
+    public Object getProgress() {
         return progress;
     }
 
-    public void setProgress(String progress) {
+    public void setProgress(Object progress) {
         this.progress = progress;
     }
 

@@ -21,9 +21,9 @@ public class ProjectWarnAdapter extends BaseAdapter {
     private Context context;
     private ProjectWarn projectWarn;
 
-    public ProjectWarnAdapter(Context context,ProjectWarn projectWarn) {
-        this.context=context;
-        this.projectWarn=projectWarn;
+    public ProjectWarnAdapter(Context context, ProjectWarn projectWarn) {
+        this.context = context;
+        this.projectWarn = projectWarn;
     }
 
     @Override
@@ -44,27 +44,36 @@ public class ProjectWarnAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        if (convertView==null){
-            holder=new ViewHolder();
-            convertView= LayoutInflater.from(context).inflate(R.layout.item_projectmg,parent,false);
-            holder.tvtatil= (TextView) convertView.findViewById(R.id.item_tvtatil);
-            holder.tvcompany= (TextView) convertView.findViewById(R.id.item_tvcompany);
-            holder.tvtime= (TextView) convertView.findViewById(R.id.item_tvtime);
-            if (projectWarn.getProjectList().get(position).getStatus().equals("超期")){
+        if (convertView == null) {
+            holder = new ViewHolder();
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_projectmg, parent, false);
+            holder.tvtatil = (TextView) convertView.findViewById(R.id.item_tvtatil);
+            holder.tvcompany = (TextView) convertView.findViewById(R.id.item_tvcompany);
+            holder.tvtime = (TextView) convertView.findViewById(R.id.item_tvtime);
+            holder.view_point = convertView.findViewById(R.id.view_point);
+            if (projectWarn.getProjectList().get(position).getStatus().equals("超期")) {
                 holder.tvtatil.setTextColor(context.getResources().getColor(R.color.red));
             }
             convertView.setTag(holder);
-        }else {
-            holder= (ViewHolder) convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
-            holder.tvtatil.setText((position+1+"、")+projectWarn.getProjectList().get(position).getProject_name());
-            holder.tvcompany.setText(projectWarn.getProjectList().get(position).getOrg_name());
-            holder.tvtime.setText(projectWarn.getProjectList().get(position).getCreatedate());
+        if (projectWarn.getProjectList().get(position).getRead().equals("1")){
+            holder.view_point.setVisibility(View.VISIBLE);
+        }else {
+            holder.view_point.setVisibility(View.GONE);
+        }
+
+        holder.tvtatil.setText((position + 1 + "、") + projectWarn.getProjectList().get(position).getProject_name());
+        holder.tvcompany.setText(projectWarn.getProjectList().get(position).getOrg_name());
+        holder.tvtime.setText(projectWarn.getProjectList().get(position).getCreatedate());
         return convertView;
     }
-    class ViewHolder{
+
+    class ViewHolder {
         TextView tvtatil;
         TextView tvcompany;
         TextView tvtime;
+        View view_point;
     }
 }

@@ -53,7 +53,7 @@ public class ProjectWarnActivity extends BaseActivity {
         tvTooltarTitle.setText("项目提醒");
         String personuuid = (String) SPUtils.get(ProjectWarnActivity.this, "personuuid", "");
         if (!EmptyUtils.isEmpty(personuuid)) {
-            getDataFromService(personuuid,1,6);
+            getDataFromService(personuuid,1,20);
         }
     }
 

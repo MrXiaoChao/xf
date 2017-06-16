@@ -55,9 +55,9 @@ public class ProjectFlowActivity extends BaseActivity {
     //获取权限并且根据权限显示模块
     private void getStatus() {
         //status 1：个人账号2：企业账号3：责任单位4：管理员5：领导
-        int status = (int) SPUtils.get(ProjectFlowActivity.this, "status",1);
+        String status = (String) SPUtils.get(ProjectFlowActivity.this, "status","1");
         if (!EmptyUtils.isEmpty(status)) {
-            if (status == 1 || status == 2) {
+            if (status .equals("1") || status.equals("2")) {
                 llYwbl.setVisibility(View.GONE);
                 llLd.setVisibility(View.GONE);
             }

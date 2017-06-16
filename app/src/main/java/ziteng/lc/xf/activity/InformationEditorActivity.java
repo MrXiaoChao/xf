@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -251,7 +252,8 @@ public class InformationEditorActivity extends BaseActivity {
                 yearOutput.setText(response.getYear_output());
                 taxContribution.setText(response.getTax_contribution());
                 employmentPull.setText(response.getEmployment_pull());
-                tvDate.setText(DateFormat.format("yyyy-MM-dd", response.getExpect_date()));
+                //DateFormat.format("yyyy-MM-dd", response.getExpect_date())
+                tvDate.setText((CharSequence) response.getExpect_date());
                 //是否外资
                 if (response.getCooperation().equals("1")) {
                     spHefs.setSelection(0);
@@ -316,7 +318,7 @@ public class InformationEditorActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.i("lc",error.toString());
             }
         });
         App.getInstance().getHttpQueue().add(request);

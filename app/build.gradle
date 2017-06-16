@@ -66,5 +66,6 @@ dependencies {
     compile project(':library_pullToRefresh')
     //城市选择列表
     compile 'com.zaaach:citypicker:1.1'
+
 }
 

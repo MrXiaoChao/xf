@@ -3,6 +3,7 @@ package ziteng.lc.xf.activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -415,12 +416,11 @@ public class InformationInputActivity extends BaseActivity {
         map.put("product", "");
         map.put("situations", situations);
         map.put("personuuid", personuuid);
-        map.put("pronotes", pronotes);
-
+        map.put("pronotes", (pronotes == null) ? "" : pronotes);
         GsonRequest<Success> request = new GsonRequest<Success>(Request.Method.POST, map, Url.InfomationInput, Success.class, new Response.Listener<Success>() {
             @Override
             public void onResponse(Success response) {
-                if (response.isSuccess()) {
+                if (response != null && response.isSuccess()) {
                     ToastUtils.showShortToast("提交成功");
                     finish();
                 } else {
@@ -430,7 +430,7 @@ public class InformationInputActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.i("lc", error.toString());
             }
         });
         App.getInstance().getHttpQueue().add(request);
@@ -459,7 +459,7 @@ public class InformationInputActivity extends BaseActivity {
                 String city1 = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
                 tvCity.setText(city1);
                 city = tvCity.getText().toString().trim();
-                if (!city .isEmpty()) {
+                if (!city.isEmpty()) {
                     if (city.equals("北京")) {
                         city = "1";
                     } else if (city.equals("天津")) {

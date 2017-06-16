@@ -136,11 +136,11 @@ public class LoginActivity extends BaseActivity {
                     String idCard = response.getIdcard();
                     String name = response.getName();
                     String usename = response.getUsername();
-                    String org_name = response.getOrg_name();
-                    //status 1：个人账号2：企业账号3：责任单位4：管理员5：领导
-                    int status=response.getStatus();
+                    String org_name = (String) response.getOrg_name();
+                    //status 1：个人账号2：企业账号3：责任单位4：市领导5：管理员
+                    String status=response.getStatus();
                     if (sp == 3) {
-                        if (response.getStatus() == 3 || response.getStatus() == 4 || response.getStatus() == 5) {
+                        if (response.getStatus().equals("3")|| response.getStatus().equals("4")|| response.getStatus().equals("5")) {
                             SPUtils.put(LoginActivity.this, "personuuid", personuuid);
                             SPUtils.put(LoginActivity.this, "phone", phone);
                             SPUtils.put(LoginActivity.this, "idcard", idCard);
@@ -154,7 +154,7 @@ public class LoginActivity extends BaseActivity {
                             ToastUtils.showShortToast("登录方式出错了");
                         }
                     } else {
-                        if (sp == response.getStatus()) {
+                        if (sp==Integer.valueOf(response.getStatus())) {
                             SPUtils.put(LoginActivity.this, "personuuid", personuuid);
                             SPUtils.put(LoginActivity.this, "phone", phone);
                             SPUtils.put(LoginActivity.this, "idcard", idCard);

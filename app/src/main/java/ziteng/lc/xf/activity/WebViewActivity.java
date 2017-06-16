@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.blankj.utilcode.utils.StringUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,9 +38,14 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        tvTooltarTitle.setText("新闻详情");
         Intent intent = getIntent();
         String URL = intent.getStringExtra("URL");
+        String flag = intent.getStringExtra("flag");
+        if (StringUtils.equals(flag, "超期项目详情")) {
+            tvTooltarTitle.setText("超期项目详情");
+        } else {
+            tvTooltarTitle.setText("新闻详情");
+        }
         init(URL);
     }
 

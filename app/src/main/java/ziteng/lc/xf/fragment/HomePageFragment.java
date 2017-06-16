@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -17,8 +18,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.blankj.utilcode.utils.EmptyUtils;
+import com.blankj.utilcode.utils.StringUtils;
 import com.blankj.utilcode.utils.ToastUtils;
 import com.bumptech.glide.Glide;
+import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
@@ -27,9 +30,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.Unbinder;
 import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
 import ziteng.lc.xf.R;
@@ -42,9 +47,11 @@ import ziteng.lc.xf.adapter.NewsListAdapter;
 import ziteng.lc.xf.app.App;
 import ziteng.lc.xf.base.BaseFragment;
 import ziteng.lc.xf.bean.NewsList;
+import ziteng.lc.xf.bean.UpView;
 import ziteng.lc.xf.http.GsonRequest;
 import ziteng.lc.xf.http.Url;
 import ziteng.lc.xf.widegt.SPUtils;
+import ziteng.lc.xf.widegt.UPMarqueeView;
 
 
 /**
@@ -59,7 +66,11 @@ public class HomePageFragment extends BaseFragment {
     TextView tvTooltarTitle;
     @BindView(R.id.lv_refresh)
     PullToRefreshListView lvRefresh;
+    Unbinder unbinder;
+
+
     private View headerView;
+    private View headerUpView;
     private ArrayList<NewsList.ProjectListBean> list;
     private ListView listView;
     private int page = 1;
@@ -73,6 +84,8 @@ public class HomePageFragment extends BaseFragment {
     private View view_warn;
     private View view_stament;
     private View view_flow;
+    private UPMarqueeView upMarqueeView;
+    private String status;
 
     @Override
     protected int getLayoutId() {
@@ -93,6 +106,8 @@ public class HomePageFragment extends BaseFragment {
     }
 
     private void initview() {
+        //status 1：个人账号2：企业账号3：政府机关 4：市领导5：超级管理员 6：部门领导 7：商务局管理员
+        status = (String) SPUtils.get(getActivity(), "status", "");
         ivToolbarBack.setVisibility(View.INVISIBLE);
         tvTooltarTitle.setText("招商信息录入平台");
         personuuid = (String) SPUtils.get(getActivity(), "personuuid", "");
@@ -160,9 +175,15 @@ public class HomePageFragment extends BaseFragment {
         lvRefresh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra("URL", URL + "news_id=" + list.get(position - 2).getNews_id());
-                startActivity(intent);
+                if (StringUtils.equals(status, "4")) {
+                    Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                    intent.putExtra("URL", URL + "news_id=" + list.get(position - 3).getNews_id());
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                    intent.putExtra("URL", URL + "news_id=" + list.get(position - 2).getNews_id());
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -215,8 +236,16 @@ public class HomePageFragment extends BaseFragment {
     //初始化头布局
     private void initHeaderView() {
         headerView = LayoutInflater.from(getActivity()).inflate(R.layout.headview, null);
+        headerUpView = LayoutInflater.from(getActivity()).inflate(R.layout.headview_caoqi, null);
+        upMarqueeView = (UPMarqueeView) headerUpView.findViewById(R.id.upview);
         //添加头布局
         listView.addHeaderView(headerView);
+        //市领导 在首页 要显示所有项目超期的垂直滚动的Textview
+        if (StringUtils.equals(status, "4")) {
+            //市领导获取超期项目数据
+            initUpViewData();
+            listView.addHeaderView(headerUpView);
+        }
         ImageView ivBanner = (ImageView) headerView.findViewById(R.id.iv_banner);
         Glide.with(getActivity()).load(R.mipmap.banner).into(ivBanner);
         LinearLayout news = (LinearLayout) headerView.findViewById(R.id.ll_news);
@@ -266,15 +295,13 @@ public class HomePageFragment extends BaseFragment {
         badgeView = new QBadgeView(getActivity());
         badgeView.bindTarget(warn);
         badgeView.setBadgeGravity(Gravity.END | Gravity.TOP).setGravityOffset(-6, false).setBadgeTextSize(24, false);
-
         getStatus();
     }
+
     //获取权限并且根据权限显示模块
     private void getStatus() {
-        //status 1：个人账号2：企业账号3：责任单位4：管理员5：领导
-        int status = (int) SPUtils.get(getActivity(), "status",1);
         if (!EmptyUtils.isEmpty(status)) {
-            if (status == 1 || status == 2) {
+            if (status.equals("1") || status.equals("2")) {
                 warn.setVisibility(View.GONE);
                 statement.setVisibility(View.GONE);
                 view_warn.setVisibility(View.GONE);
@@ -283,6 +310,7 @@ public class HomePageFragment extends BaseFragment {
             }
         }
     }
+
     //获取未读数据的条目
     private void getReadCount(final String personuuid) {
 
@@ -307,7 +335,7 @@ public class HomePageFragment extends BaseFragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                String a = error.toString();
             }
         }) {
             @Override
@@ -319,4 +347,64 @@ public class HomePageFragment extends BaseFragment {
         };
         App.getInstance().getHttpQueue().add(request);
     }
+
+    /**
+     * 初始化需要循环的View
+     * 为了灵活的使用滚动的View，所以把滚动的内容让用户自定义
+     */
+
+    List<UpView> upViewsData = new ArrayList<>();
+    List<View> views = new ArrayList<>();
+
+    private void setView() {
+        final String url = "http://211.151.183.170:8097/rqzsj/news/reminddetails.jsp?";
+        if (upViewsData != null && upViewsData.size() > 0) {
+            for (int i = 0; i < upViewsData.size(); i++) {
+                final int position = i;
+                //设置滚动的单个布局
+                LinearLayout moreView = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.item_textview, null);
+                //初始化布局的控件
+                TextView tv1 = (TextView) moreView.findViewById(R.id.tv);
+                /**
+                 * 设置监听
+                 */
+                moreView.findViewById(R.id.rl).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                        intent.putExtra("URL", url + "project_id=" + upViewsData.get(position).getProject_id() + "&status=超期");
+                        intent.putExtra("flag","超期项目详情");
+                        startActivity(intent);
+                    }
+                });
+                //进行对控件赋值
+                tv1.setText(upViewsData.get(i).getContent());
+                //添加到循环滚动数组里面去
+                views.add(moreView);
+            }
+        }
+        upMarqueeView.setViews(views);
+    }
+
+    /**
+     * 获取超期项目的数据
+     */
+    private void initUpViewData() {
+        TypeToken type = new TypeToken<List<UpView>>() {
+        };
+        GsonRequest<List<UpView>> request = new GsonRequest<List<UpView>>(Url.SLD, type, new Response.Listener<List<UpView>>() {
+            @Override
+            public void onResponse(List<UpView> upViews) {
+                upViewsData = upViews;
+                setView();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        App.getInstance().getHttpQueue().add(request);
+    }
+
 }
