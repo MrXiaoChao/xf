@@ -57,7 +57,7 @@ public class ProjectFlowActivity extends BaseActivity {
         //status 1：个人账号2：企业账号3：责任单位4：管理员5：领导
         String status = (String) SPUtils.get(ProjectFlowActivity.this, "status","1");
         if (!EmptyUtils.isEmpty(status)) {
-            if (status .equals("1") || status.equals("2")) {
+            if (status .equals("1") || status.equals("2")|| status.equals("4")) {
                 llYwbl.setVisibility(View.GONE);
                 llLd.setVisibility(View.GONE);
             }
