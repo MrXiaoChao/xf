@@ -42,6 +42,7 @@ public class ProjectWarnActivity extends BaseActivity {
     @BindView(R.id.lv_project)
     ListView lvProjectt;
     private ProjectWarnAdapter adapter;
+    private String personuuid;
 
     @Override
     protected int getLayout() {
@@ -51,7 +52,7 @@ public class ProjectWarnActivity extends BaseActivity {
     @Override
     protected void initData() {
         tvTooltarTitle.setText("项目提醒");
-        String personuuid = (String) SPUtils.get(ProjectWarnActivity.this, "personuuid", "");
+        personuuid = (String) SPUtils.get(ProjectWarnActivity.this, "personuuid", "");
         if (!EmptyUtils.isEmpty(personuuid)) {
             getDataFromService(personuuid,1,20);
         }
@@ -62,7 +63,7 @@ public class ProjectWarnActivity extends BaseActivity {
         onBackPressedSupport();
     }
 
-    private void getDataFromService(String personuuid,int page,int rows) {
+    private void getDataFromService(final String personuuid, int page, int rows) {
         //现在数据不多``以后要做成分页加载
         Map<String, String> map = new HashMap<>();
         map.put("personuuid", personuuid);
@@ -78,7 +79,7 @@ public class ProjectWarnActivity extends BaseActivity {
                     lvProjectt.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            String URL="http://211.151.183.170:8097/rqzsj/news/reminddetails.jsp?project_id="+response.getProjectList().get(position).getProject_id()+"&status="+response.getProjectList().get(position).getStatus();
+                            String URL="http://211.151.183.170:8097/rqzsj/news/reminddetails.jsp?project_id="+response.getProjectList().get(position).getProject_id()+"&status="+response.getProjectList().get(position).getStatus()+"&personuuid="+personuuid;
                             Intent intent =new Intent(ProjectWarnActivity.this,WebViewProjectActivity.class);
                             intent.putExtra("URL",URL);
                             startActivity(intent);
