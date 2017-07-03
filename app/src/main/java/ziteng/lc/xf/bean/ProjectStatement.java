@@ -83,7 +83,7 @@ public class ProjectStatement implements Serializable {
         }
 
         public List<SubclassificationBean> getSubclassification() {
-            return subclassification;
+            return (subclassification != null) ? subclassification : new ArrayList<SubclassificationBean>();
         }
 
         public void setSubclassification(List<SubclassificationBean> subclassification) {

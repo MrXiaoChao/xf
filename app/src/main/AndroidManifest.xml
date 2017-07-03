@@ -58,6 +58,7 @@
         <activity android:name=".activity.StatementTwoActivity" />
         <activity android:name=".activity.ProjectStatementListActivity" />
         <activity android:name=".activity.ForgetPasswordActivity" />
+        <activity android:name=".activity.SelectCityActivity" />
 
     </application>
 

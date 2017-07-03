@@ -42,6 +42,7 @@ public class StatementOneActivity extends BaseActivity {
         setAdapter();
         initEven();
     }
+
     //listview的点击事件
     private void initEven() {
         lvStatement.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -49,28 +50,28 @@ public class StatementOneActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ProjectStatement.SubclassificationBeanX subclassificationBeanX = projectStatement.getSubclassification().get(position);
                 //这个判断是在有下一级的情况下进去下一级`没有的话`进入ProjectStatementListActivity
-                if (subclassificationBeanX.getSubclassification().size() > 0) {
-                    Intent intent1 = new Intent(StatementOneActivity.this, StatementTwoActivity.class);
-                    intent1.putExtra("SubclassificationBeanX", subclassificationBeanX);
-                    intent1.putExtra("classifyName", projectStatement.getSubclassification().get(position).getClassifyName());
-                    startActivity(intent1);
-                } else {
-                    //按扣分统计是直接进入webview所以加这个判断
-                    if (projectStatement.getClassifyName().equals("按扣分统计")) {
-                        String url = Url.KFTJ + "mark=" + projectStatement.getSubclassification().get(position).getMark();
-                        Intent intent = new Intent(StatementOneActivity.this, WebViewProjectActivity.class);
-                        intent.putExtra("URL", url);
-                        startActivity(intent);
+                    if (subclassificationBeanX.getSubclassification().size() > 0) {
+                        Intent intent1 = new Intent(StatementOneActivity.this, StatementTwoActivity.class);
+                        intent1.putExtra("SubclassificationBeanX", subclassificationBeanX);
+                        intent1.putExtra("classifyName", projectStatement.getSubclassification().get(position).getClassifyName());
+                        startActivity(intent1);
                     } else {
-                        Intent intent2 = new Intent(StatementOneActivity.this, ProjectStatementListActivity.class);
-                        intent2.putExtra("flag",true);
-                        intent2.putExtra("classifyName", projectStatement.getSubclassification().get(position).getClassifyName());
-                        intent2.putExtra("classifyName2", projectStatement.getClassifyName());
-                        intent2.putExtra("mark", projectStatement.getSubclassification().get(position).getMark());
-                        startActivity(intent2);
+                        //按扣分统计是直接进入webview所以加这个判断
+                        if (projectStatement.getClassifyName().equals("按扣分统计")) {
+                            String url = Url.KFTJ + "mark=" + projectStatement.getSubclassification().get(position).getMark();
+                            Intent intent = new Intent(StatementOneActivity.this, WebViewProjectActivity.class);
+                            intent.putExtra("URL", url);
+                            startActivity(intent);
+                        } else {
+                            Intent intent2 = new Intent(StatementOneActivity.this, ProjectStatementListActivity.class);
+                            intent2.putExtra("flag", true);
+                            intent2.putExtra("classifyName", projectStatement.getSubclassification().get(position).getClassifyName());
+                            intent2.putExtra("classifyName2", projectStatement.getClassifyName());
+                            intent2.putExtra("mark", projectStatement.getSubclassification().get(position).getMark());
+                            startActivity(intent2);
+                        }
                     }
                 }
-            }
         });
     }
 

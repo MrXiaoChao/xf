@@ -372,7 +372,7 @@ public class HomePageFragment extends BaseFragment {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                        intent.putExtra("URL", url + "project_id=" + upViewsData.get(position).getProject_id() + "&status=超期");
+                        intent.putExtra("URL", url + "project_id=" + upViewsData.get(position).getProject_id() + "&status=超期"+"&role="+status+"&personuuid="+personuuid);
                         intent.putExtra("flag","超期项目详情");
                         startActivity(intent);
                     }

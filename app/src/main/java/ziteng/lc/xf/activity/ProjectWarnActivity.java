@@ -43,6 +43,7 @@ public class ProjectWarnActivity extends BaseActivity {
     ListView lvProjectt;
     private ProjectWarnAdapter adapter;
     private String personuuid;
+    private String status;
 
     @Override
     protected int getLayout() {
@@ -53,6 +54,7 @@ public class ProjectWarnActivity extends BaseActivity {
     protected void initData() {
         tvTooltarTitle.setText("项目提醒");
         personuuid = (String) SPUtils.get(ProjectWarnActivity.this, "personuuid", "");
+        status = (String) SPUtils.get(ProjectWarnActivity.this,"status","");
         if (!EmptyUtils.isEmpty(personuuid)) {
             getDataFromService(personuuid,1,20);
         }
@@ -79,7 +81,7 @@ public class ProjectWarnActivity extends BaseActivity {
                     lvProjectt.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            String URL="http://211.151.183.170:8097/rqzsj/news/reminddetails.jsp?project_id="+response.getProjectList().get(position).getProject_id()+"&status="+response.getProjectList().get(position).getStatus()+"&personuuid="+personuuid;
+                            String URL="http://211.151.183.170:8097/rqzsj/news/reminddetails.jsp?project_id="+response.getProjectList().get(position).getProject_id()+"&status="+response.getProjectList().get(position).getStatus()+"&personuuid="+personuuid+"&role"+status;
                             Intent intent =new Intent(ProjectWarnActivity.this,WebViewProjectActivity.class);
                             intent.putExtra("URL",URL);
                             startActivity(intent);

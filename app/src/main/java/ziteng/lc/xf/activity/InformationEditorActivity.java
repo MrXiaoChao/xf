@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.blankj.utilcode.utils.EmptyUtils;
 import com.blankj.utilcode.utils.RegexUtils;
+import com.blankj.utilcode.utils.StringUtils;
 import com.blankj.utilcode.utils.ToastUtils;
 import com.google.gson.reflect.TypeToken;
 import com.zaaach.citypicker.CityPickerActivity;
@@ -93,8 +94,8 @@ public class InformationEditorActivity extends BaseActivity {
     Spinner spXmlx;
     @BindView(R.id.sp_cylb)
     Spinner spCylb;
-    @BindView(R.id.tv_city)
-    TextView tvCity;
+    @BindView(R.id.sp_city)
+    Spinner spCity;
     @BindView(R.id.sp_xmbz)
     Spinner spXmbz;
     @BindView(R.id.sp_hzlb)
@@ -109,6 +110,8 @@ public class InformationEditorActivity extends BaseActivity {
     private String[] mStringArrayspXmbz;
     private ArrayAdapter<String> mAdapterspHzlx;
     private String[] mStringArrayspHzlx;
+    private ArrayAdapter<String> mAdapterspCity;
+    private String[] mStringArrayspCity;
 
     private String hefs1;
     private String xmlx1;
@@ -156,6 +159,7 @@ public class InformationEditorActivity extends BaseActivity {
         getSpinnerSelect();
         getStringforintent();
         getDataFromSerVice(project_id);
+        getCityText();
     }
 
     //获取上一个页面传过来的值
@@ -167,44 +171,43 @@ public class InformationEditorActivity extends BaseActivity {
         //根据传过来的project_status设置权限 1:录入未签约 2:签约 3:完成  (项目签约后不能修改,以此字段来区分)
         //要求，项目状态只有在“未签约”时才能修改；其他状态下只能查看内容，不能进行修改，（要去掉 保存 按钮，内容为只读状态）
         if (!project_status.equals("1")) {
-            setEditextToEnabled(projectName,false);
-            setEditextToEnabled(orgName,false);
-            setEditextToEnabled(name,false);
-            setEditextToEnabled(phone,false);
-            setEditextToEnabled(email,false);
+            setEditextToEnabled(projectName, false);
+            setEditextToEnabled(orgName, false);
+            setEditextToEnabled(name, false);
+            setEditextToEnabled(phone, false);
+            setEditextToEnabled(email, false);
             btnSave.setVisibility(View.GONE);
-            setEditextToEnabled(projectDescrip,false);
-            setEditextToEnabled(situations,false);
-            setEditextToEnabled(invest,false);
-            setEditextToEnabled(floorArea,false);
-            setEditextToEnabled(siteArea,false);
-            setEditextToEnabled(intensity,false);
-            setEditextToEnabled(cycle,false);
-            setEditextToEnabled(yearOutput,false);
-            setEditextToEnabled(taxContribution,false);
-            setEditextToEnabled(employmentPull,false);
-            setSpinnerToEnabled(spHefs,false);
-            setSpinnerToEnabled(spXmlx,false);
-            setSpinnerToEnabled(spCylb,false);
-            setSpinnerToEnabled(spXmbz,false);
-            setSpinnerToEnabled(sp_Hzlb,false);
+            setEditextToEnabled(projectDescrip, false);
+            setEditextToEnabled(situations, false);
+            setEditextToEnabled(invest, false);
+            setEditextToEnabled(floorArea, false);
+            setEditextToEnabled(siteArea, false);
+            setEditextToEnabled(intensity, false);
+            setEditextToEnabled(cycle, false);
+            setEditextToEnabled(yearOutput, false);
+            setEditextToEnabled(taxContribution, false);
+            setEditextToEnabled(employmentPull, false);
+            setSpinnerToEnabled(spHefs, false);
+            setSpinnerToEnabled(spXmlx, false);
+            setSpinnerToEnabled(spCylb, false);
+            setSpinnerToEnabled(spXmbz, false);
+            setSpinnerToEnabled(sp_Hzlb, false);
             tvDate.setFocusable(false);
             tvDate.setFocusableInTouchMode(false);
             tvDate.setEnabled(false);
-            tvCity.setFocusable(false);
-            tvCity.setFocusableInTouchMode(false);
-            tvCity.setEnabled(false);
+            setSpinnerToEnabled(spCity, false);
         }
     }
+
     //Editext设置不可以编辑
-    public void setEditextToEnabled(EditText editext,boolean t){
+    public void setEditextToEnabled(EditText editext, boolean t) {
         editext.setFocusable(t);
         editext.setFocusableInTouchMode(t);
         editext.setEnabled(t);
     }
 
     //Editext设置不可以编辑
-    public void setSpinnerToEnabled(Spinner Spinner,boolean t){
+    public void setSpinnerToEnabled(Spinner Spinner, boolean t) {
         Spinner.setFocusable(t);
         Spinner.setFocusableInTouchMode(t);
         Spinner.setEnabled(t);
@@ -227,10 +230,18 @@ public class InformationEditorActivity extends BaseActivity {
         mStringArrayspHzlx = getResources().getStringArray(R.array.hzlb);
         mAdapterspHzlx = new TestArrayAdapter(InformationEditorActivity.this, mStringArrayspHzlx, true);
         sp_Hzlb.setAdapter(mAdapterspHzlx);
+
+        //设置城市
+        mStringArrayspCity = getResources().getStringArray(R.array.city);
+        mAdapterspCity = new TestArrayAdapter(InformationEditorActivity.this, mStringArrayspCity, true);
+        spCity.setAdapter(mAdapterspCity);
     }
 
 
     //项目信息回显
+    private String city3;
+    private String[] newCitys=new String[10];
+
     private void getDataFromSerVice(String project_id) {
         Map<String, String> map = new HashMap<>();
         map.put("project_id", project_id);
@@ -282,15 +293,19 @@ public class InformationEditorActivity extends BaseActivity {
                 }
                 //所属城市
                 if (response.getColony().equals("1")) {
-                    tvCity.setText("北京");
+                    spCity.setSelection(0);
                 } else if (response.getColony().equals("2")) {
-                    tvCity.setText("天津");
+                    spCity.setSelection(1);
                 } else if (response.getColony().equals("3")) {
-                    tvCity.setText("上海");
+                    spCity.setSelection(2);
                 } else if (response.getColony().equals("4")) {
-                    tvCity.setText("河北");
+                    spCity.setSelection(3);
                 } else if (response.getColony().equals("5")) {
-                    tvCity.setText(response.getPronotes());
+                    mAdapterspCity = new TestArrayAdapter(InformationEditorActivity.this, StringArray(response.getPronotes()), true);
+                    spCity.setAdapter(mAdapterspCity);
+                    spCity.setSelection(5);
+                    city3 = response.getPronotes();
+                    newCitys = StringArray(response.getPronotes());
                 }
 
                 //项目备注
@@ -318,16 +333,26 @@ public class InformationEditorActivity extends BaseActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("lc",error.toString());
+                Log.i("lc", error.toString());
             }
         });
         App.getInstance().getHttpQueue().add(request);
     }
 
+    //在数组中增加一个元素
+    public String[] StringArray(String s) {
+        List<String> list = new ArrayList<String>();
+        for (int i = 0; i < mStringArrayspCity.length; i++) {
+            list.add(mStringArrayspCity[i]);
+        }
+        list.add(5, s);
+        String[] newStr = list.toArray(new String[1]); //返回一个包含所有对象的指定类型的数组
+        return newStr;
+    }
+
 
     //获取该页面editext的值与spinner所选中的值
     private void getSpinnerSelect() {
-        //获取城市的值
 
         spHefs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -387,13 +412,6 @@ public class InformationEditorActivity extends BaseActivity {
             }
         });
 
-        tvCity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent(InformationEditorActivity.this, CityPickerActivity.class), REQUEST_CODE_PICK_CITY);
-            }
-
-        });
         spXmbz.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -636,7 +654,7 @@ public class InformationEditorActivity extends BaseActivity {
         map.put("category", hzlb1);
         map.put("product", "");
         map.put("situations", situations1);
-        map.put("pronotes", pronotes);
+        map.put("pronotes", (pronotes == null) ? "" : pronotes);
 
         GsonRequest<Success> request = new GsonRequest<Success>(Request.Method.POST, map, Url.InformationProjectEdit, Success.class, new Response.Listener<Success>() {
             @Override
@@ -660,27 +678,59 @@ public class InformationEditorActivity extends BaseActivity {
 
     //信息编辑这里的城市编辑，如果客户没有编辑就传以下方法获取的值，如果客户编辑了就传onActivityResult中的city值。
     private void getCityText() {
-        city1 = tvCity.getText().toString().trim();
-        if (city1.equals("北京")) {
-            city1 = "1";
-        } else if (city1.equals("天津")) {
-            city1 = "2";
-        } else if (city1.equals("上海")) {
-            city1 = "3";
-        } else if (city1.equals("河北")) {
-            city1 = "4";
-        } else {
-            city1 = "5";
-            pronotes = tvCity.getText().toString().trim();
-        }
+        //获取城市的值
+        spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (!StringUtils.isEmpty(city3)) {
+                    city1 = StringArray(city3)[position];
+                } else {
+                    if (newCitys!=null) {
+                        city1 = StringArray(city3)[position];
+                    } else {
+                        city1 = getResources().getStringArray(R.array.city)[position];
+                    }
+                }
+                if (!city1.isEmpty()) {
+                    if (city1.equals("北京")) { 
+                        city1 = "1";
+                    } else if (city1.equals("天津")) {
+                        city1 = "2";
+                    } else if (city1.equals("上海")) {
+                        city1 = "3";
+                    } else if (city1.equals("河北")) {
+                        city1 = "4";
+                    } else if (city1.equals("其他")) {
+                        Intent intent = new Intent(InformationEditorActivity.this, SelectCityActivity.class);
+                        startActivityForResult(intent, REQUEST_CODE_PICK_CITY);
+                    } else {
+                        city1 = "5";
+                        pronotes = city3;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK) {
             if (data != null) {
-                String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
-                tvCity.setText(city);
+                city3 = data.getStringExtra("cityname");
+                if (city3 != null) {
+                    city1 = "5";
+                    StringArray(city3)[5] = city3;
+                    mAdapterspCity = new TestArrayAdapter(InformationEditorActivity.this, StringArray(city3), true);
+                    spCity.setAdapter(mAdapterspCity);
+                    spCity.setSelection(5);
+                    pronotes = city3;
+                }
             }
         }
     }

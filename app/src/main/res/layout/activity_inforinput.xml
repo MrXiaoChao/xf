@@ -214,16 +214,11 @@
                 android:layout_weight="1"
                 android:background="@drawable/et_bround">
 
-            <TextView
-                android:textColor="@color/textcolor"
-                android:layout_marginLeft="7dp"
-                android:textSize="12sp"
-                android:layout_centerVertical="true"
-                android:gravity="center_vertical"
-                android:id="@+id/tv_city"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"/>
+                <Spinner
+                    android:id="@+id/sp_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical" />
 
            </RelativeLayout>
 

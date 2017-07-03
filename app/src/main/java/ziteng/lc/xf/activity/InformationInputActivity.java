@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.blankj.utilcode.utils.EmptyUtils;
 import com.blankj.utilcode.utils.RegexUtils;
+import com.blankj.utilcode.utils.StringUtils;
 import com.blankj.utilcode.utils.ToastUtils;
 import com.google.gson.reflect.TypeToken;
 import com.zaaach.citypicker.CityPickerActivity;
@@ -57,8 +58,8 @@ public class InformationInputActivity extends BaseActivity {
     Spinner spXmlx;
     @BindView(R.id.sp_cylb)
     Spinner spCylb;
-    @BindView(R.id.tv_city)
-    TextView tvCity;
+    @BindView(R.id.sp_city)
+    Spinner spCity;
     @BindView(R.id.sp_xmbz)
     Spinner spXmbz;
     @BindView(R.id.sp_hzlb)
@@ -103,6 +104,8 @@ public class InformationInputActivity extends BaseActivity {
     private String[] mStringArraySphefd;
     private ArrayAdapter<String> mAdapterSpxmlx;
     private String[] mStringArraySpxmlx;
+    private ArrayAdapter<String> mAdaptercity;
+    private String[] mStringArraycity;
     private ArrayAdapter<String> mAdapterspCylb;
     private String[] mStringArrayspCylb;
     private ArrayAdapter<String> mAdapterspXmbz;
@@ -165,6 +168,10 @@ public class InformationInputActivity extends BaseActivity {
         mStringArraySpxmlx = getResources().getStringArray(R.array.xmlx);
         mAdapterSpxmlx = new TestArrayAdapter(InformationInputActivity.this, mStringArraySpxmlx, true);
         spXmlx.setAdapter(mAdapterSpxmlx);
+
+        mStringArraycity = getResources().getStringArray(R.array.city);
+        mAdaptercity = new TestArrayAdapter(InformationInputActivity.this, mStringArraycity, true);
+        spCity.setAdapter(mAdaptercity);
 
 //        mStringArrayspCylb = getResources().getStringArray(R.array.cylb);
 //        mAdapterspCylb = new TestArrayAdapter(InformationInputActivity.this, mStringArrayspCylb);
@@ -338,14 +345,40 @@ public class InformationInputActivity extends BaseActivity {
 
             }
         });
-
-        tvCity.setOnClickListener(new View.OnClickListener() {
+        //城市选择
+        spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent(InformationInputActivity.this, CityPickerActivity.class), REQUEST_CODE_PICK_CITY);
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (!StringUtils.isEmpty(city1)) {
+                    city = StringArray(city1)[position];
+                } else {
+                    city = getResources().getStringArray(R.array.city)[position];
+                }
+                if (!city.isEmpty()) {
+                    if (city.equals("北京")) {
+                        city = "1";
+                    } else if (city.equals("天津")) {
+                        city = "2";
+                    } else if (city.equals("上海")) {
+                        city = "3";
+                    } else if (city.equals("河北")) {
+                        city = "4";
+                    } else if (city.equals("其他")){
+                        Intent intent = new Intent(InformationInputActivity.this, SelectCityActivity.class);
+                        startActivityForResult(intent, REQUEST_CODE_PICK_CITY);
+                    }else {
+                        city="5";
+                    }
+                }
+
             }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
         });
+
         spXmbz.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -452,30 +485,35 @@ public class InformationInputActivity extends BaseActivity {
         }, showDate.get(Calendar.YEAR), showDate.get(Calendar.MONTH), showDate.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+    private String city1;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK) {
             if (data != null) {
-                String city1 = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
-                tvCity.setText(city1);
-                city = tvCity.getText().toString().trim();
-                if (!city.isEmpty()) {
-                    if (city.equals("北京")) {
-                        city = "1";
-                    } else if (city.equals("天津")) {
-                        city = "2";
-                    } else if (city.equals("上海")) {
-                        city = "3";
-                    } else if (city.equals("河北")) {
-                        city = "4";
-                    } else {
-                        city = "5";
-                        pronotes = tvCity.getText().toString().trim();
-                    }
+                city1 = data.getStringExtra("cityname");
+                if (city1 != null) {
+                    city = "5";
+                    StringArray(city1)[5] = city1;
+                    mAdaptercity = new TestArrayAdapter(InformationInputActivity.this, StringArray(city1), true);
+                    spCity.setAdapter(mAdaptercity);
+                    spCity.setSelection(5);
+                    pronotes = city1;
                 }
             }
 
         }
+    }
+
+    //在数组中增加一个元素
+    public String[] StringArray(String s) {
+        List<String> list = new ArrayList<String>();
+        for (int i = 0; i < mStringArraycity.length; i++) {
+            list.add(mStringArraycity[i]);
+        }
+        list.add(5, s);
+        String[] newStr = list.toArray(new String[1]); //返回一个包含所有对象的指定类型的数组
+        return newStr;
     }
 
     //获取所属产业类别接口
