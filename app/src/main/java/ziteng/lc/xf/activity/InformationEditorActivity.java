@@ -692,7 +692,8 @@ public class InformationEditorActivity extends BaseActivity {
                     }
                 }
                 if (!city1.isEmpty()) {
-                    if (city1.equals("北京")) { 
+                    
+                    if (city1.equals("北京")) {
                         city1 = "1";
                     } else if (city1.equals("天津")) {
                         city1 = "2";
