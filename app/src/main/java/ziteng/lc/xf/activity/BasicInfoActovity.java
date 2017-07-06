@@ -37,6 +37,18 @@ public class BasicInfoActovity extends BaseActivity {
     TextView tvName;
     @BindView(R.id.rl_phone)
     RelativeLayout rlPhone;
+    @BindView(R.id.tv_link_man)
+    TextView tvLinkMan;
+    @BindView(R.id.rl_link_man)
+    RelativeLayout rlLinkMan;
+    @BindView(R.id.tv_office_phone)
+    TextView tvOfficePhone;
+    @BindView(R.id.rl_office_phone)
+    RelativeLayout rlOfficePhone;
+    @BindView(R.id.tv_email)
+    TextView tvEmail;
+    @BindView(R.id.rl_email)
+    RelativeLayout rlEmail;
 
     @Override
     protected int getLayout() {
@@ -50,6 +62,17 @@ public class BasicInfoActovity extends BaseActivity {
         String idcard = (String) SPUtils.get(BasicInfoActovity.this, "idcard", "");
         String name = (String) SPUtils.get(BasicInfoActovity.this, "name", "");
         String usename = (String) SPUtils.get(BasicInfoActovity.this, "usename", "");
+        String link_man = (String) SPUtils.get(BasicInfoActovity.this, "link_man", "");
+        String office_phone = (String) SPUtils.get(BasicInfoActovity.this, "office_phone", "");
+        String email = (String) SPUtils.get(BasicInfoActovity.this, "email", "");
+        String status = (String) SPUtils.get(BasicInfoActovity.this, "status", "");
+        if (StringUtils.equals("3", status) || StringUtils.equals("4", status) || StringUtils.equals("5", status)) {
+            rlEmail.setVisibility(View.VISIBLE);
+            rlLinkMan.setVisibility(View.VISIBLE);
+            rlOfficePhone.setVisibility(View.VISIBLE);
+        }
+
+
         if (!StringUtils.isEmpty(phone)) {
             tvPhoneNum.setText(StringReplaceUtil.phoneNumberReplaceWithStar(phone));
         }
@@ -58,6 +81,9 @@ public class BasicInfoActovity extends BaseActivity {
         }
         tvUsename.setText(usename);
         tvName.setText(name);
+        tvLinkMan.setText(link_man);
+        tvEmail.setText(email);
+        tvOfficePhone.setText(office_phone);
     }
 
 
@@ -68,18 +94,19 @@ public class BasicInfoActovity extends BaseActivity {
                 onBackPressedSupport();
                 break;
             case R.id.rl_phone:
-                Intent intent = new Intent(BasicInfoActovity.this,ChangPhoneNumberActivity.class);
-                startActivityForResult(intent,0);
+                Intent intent = new Intent(BasicInfoActovity.this, ChangPhoneNumberActivity.class);
+                startActivityForResult(intent, 0);
                 break;
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==0 && resultCode ==1){
-            Bundle bundle =data.getExtras();
-            String phone=bundle.getString("phonenuber");
+        if (requestCode == 0 && resultCode == 1) {
+            Bundle bundle = data.getExtras();
+            String phone = bundle.getString("phonenuber");
             tvPhoneNum.setText(StringReplaceUtil.phoneNumberReplaceWithStar(phone));
         }
     }
+
 }

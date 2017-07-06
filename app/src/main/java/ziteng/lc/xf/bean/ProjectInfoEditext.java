@@ -7,39 +7,40 @@ package ziteng.lc.xf.bean;
 
 public class ProjectInfoEditext {
 
-
     /**
-     * project_id : 4028804d5bae3817015bae92dd780003
-     * project_name : 新能源项目12
-     * org_name : 重庆新能源有限公司
+     * project_id : 4028804d5cf69d95015cf7c4a3060255
+     * project_name : 好哦咯做最
+     * org_name : 呜呜呜
      * cooperation : 1
      * project_type : 1
      * industry : 402881e85b61681b015b6169b6920000
      * colony : 5
-     * note : 央企
-     * name : 张三
-     * phone : 13586542568
-     * email : 13494676467@qq.com
-     * invest : 6000
-     * floor_area : 500
-     * site_area : 100
-     * intensity : 100
-     * expect_date : null
-     * cycle : 15
-     * year_output : 1000
-     * tax_contribution : 45
-     * employment_pull : 4666
-     * category : 1
-     * project_descrip : 项目概述
-     * situations : 其他
-     * product : 4
-     * user_id : 402881e85b5fdd34015b5ffd43960048
-     * project_status : 3
+     * note : 1
+     * name : 你需要
+     * phone : 15201339284
+     * email : 明年@qq.com
+     * invest : 1
+     * floor_area : 1
+     * site_area : 1
+     * intensity : 1
+     * expect_date : 2017-06-30
+     * cycle : 1949
+     * year_output : 4
+     * tax_contribution : 4
+     * employment_pull : 1
+     * category : 2
+     * project_descrip : 议息
+     * situations : 1959
+     * product :
+     * user_id : 4028804d5bb2aea4015bcd944f34000c
+     * project_status : 1
      * project_date : null
-     * createdate : 2017-06-13 15:50:20
-     * updatedate : Tue Jun 13 14:22:28 CST 2017
+     * createdate : 2017-06-30 14:51:18
+     * updatedate : 2017-06-30 14:51:42
      * progress : null
-     * pronotes :
+     * pronotes : 女无语
+     * investment_entity :
+     * current_progress :
      */
 
     private String project_id;
@@ -57,7 +58,7 @@ public class ProjectInfoEditext {
     private String floor_area;
     private String site_area;
     private String intensity;
-    private Object expect_date;
+    private String expect_date;
     private String cycle;
     private String year_output;
     private String tax_contribution;
@@ -73,6 +74,8 @@ public class ProjectInfoEditext {
     private String updatedate;
     private Object progress;
     private String pronotes;
+    private String investment_entity;
+    private String current_progress;
 
     public String getProject_id() {
         return project_id;
@@ -194,11 +197,11 @@ public class ProjectInfoEditext {
         this.intensity = intensity;
     }
 
-    public Object getExpect_date() {
+    public String getExpect_date() {
         return expect_date;
     }
 
-    public void setExpect_date(Object expect_date) {
+    public void setExpect_date(String expect_date) {
         this.expect_date = expect_date;
     }
 
@@ -320,5 +323,21 @@ public class ProjectInfoEditext {
 
     public void setPronotes(String pronotes) {
         this.pronotes = pronotes;
+    }
+
+    public String getInvestment_entity() {
+        return investment_entity;
+    }
+
+    public void setInvestment_entity(String investment_entity) {
+        this.investment_entity = (investment_entity==null)?"":investment_entity;
+    }
+
+    public String getCurrent_progress() {
+        return current_progress;
+    }
+
+    public void setCurrent_progress(String current_progress) {
+        this.current_progress = (current_progress==null)?"":current_progress;
     }
 }

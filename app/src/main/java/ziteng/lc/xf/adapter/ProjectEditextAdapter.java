@@ -59,7 +59,7 @@ public class ProjectEditextAdapter extends BaseAdapter {
             holder= (ViewHolder) convertView.getTag();
         }
             holder.tvtatil.setText((position+1+"、")+projectMessage.getProjectList().get(position).getProject_name());
-            holder.tvcompany.setText(projectMessage.getProjectList().get(position).getOrg_name());
+            holder.tvcompany.setText(projectMessage.getProjectList().get(position).getProject_descrip());
             holder.tvtime.setText(projectMessage.getProjectList().get(position).getTime());
         return convertView;
     }

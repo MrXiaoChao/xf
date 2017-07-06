@@ -2,6 +2,7 @@ package ziteng.lc.xf.activity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -22,7 +23,6 @@ import com.blankj.utilcode.utils.RegexUtils;
 import com.blankj.utilcode.utils.StringUtils;
 import com.blankj.utilcode.utils.ToastUtils;
 import com.google.gson.reflect.TypeToken;
-import com.zaaach.citypicker.CityPickerActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ziteng.lc.xf.R;
 import ziteng.lc.xf.adapter.TestArrayAdapter;
@@ -52,8 +53,6 @@ public class InformationInputActivity extends BaseActivity {
     ImageView ivToolbarBack;
     @BindView(R.id.tv_tooltar_title)
     TextView tvTooltarTitle;
-    @BindView(R.id.sp_hefs)
-    Spinner spHefs;
     @BindView(R.id.sp_xmlx)
     Spinner spXmlx;
     @BindView(R.id.sp_cylb)
@@ -66,8 +65,6 @@ public class InformationInputActivity extends BaseActivity {
     Spinner sp_Hzlb;
     @BindView(R.id.et_project_name)
     EditText etProjectName;
-    @BindView(R.id.et_org_name)
-    EditText etOrgName;
     @BindView(R.id.et_name)
     EditText etName;
     @BindView(R.id.et_phone)
@@ -100,6 +97,10 @@ public class InformationInputActivity extends BaseActivity {
     Button btnSave;
     @BindView(R.id.btn_cancel)
     Button btnCancel;
+    @BindView(R.id.et_tzzt)
+    EditText etTzzt;
+    @BindView(R.id.et_dqjz)
+    EditText etDqjz;
     private ArrayAdapter<String> mAdapterSphefd;
     private String[] mStringArraySphefd;
     private ArrayAdapter<String> mAdapterSpxmlx;
@@ -112,7 +113,6 @@ public class InformationInputActivity extends BaseActivity {
     private String[] mStringArrayspXmbz;
     private ArrayAdapter<String> mAdapterspHzlx;
     private String[] mStringArrayspHzlx;
-    private String hefs;
     private String xmlx;
     private String cylb;
     private String city;
@@ -139,6 +139,8 @@ public class InformationInputActivity extends BaseActivity {
     private List<String> list;
     private List<Sscy> sscyList;
     private String pronotes;
+    private String dqjz;
+    private String tzzt;
 
 
     @Override
@@ -161,9 +163,6 @@ public class InformationInputActivity extends BaseActivity {
 
     //修改Spinner默认字体的大小与颜色
     private void changSpinnerText() {
-        mStringArraySphefd = getResources().getStringArray(R.array.hzfs);
-        mAdapterSphefd = new TestArrayAdapter(InformationInputActivity.this, mStringArraySphefd, true);
-        spHefs.setAdapter(mAdapterSphefd);
 
         mStringArraySpxmlx = getResources().getStringArray(R.array.xmlx);
         mAdapterSpxmlx = new TestArrayAdapter(InformationInputActivity.this, mStringArraySpxmlx, true);
@@ -194,8 +193,11 @@ public class InformationInputActivity extends BaseActivity {
                 onBackPressedSupport();
                 break;
             case R.id.btn_save:
+                //当前进展
+                dqjz = etDqjz.getText().toString().trim();
+                //投资主体
+                tzzt = etTzzt.getText().toString().trim();
                 projectName = etProjectName.getText().toString().trim();
-                orgName = etOrgName.getText().toString().trim();
                 name = etName.getText().toString().trim();
                 phone = etPhone.getText().toString().trim();
                 email = etEmail.getText().toString().trim();
@@ -210,6 +212,7 @@ public class InformationInputActivity extends BaseActivity {
                 employmentPull = etEmploymentPull.getText().toString().trim();
                 projectDescrip = etProjectDescrip.getText().toString().trim();
                 situations = etSituations.getText().toString().trim();
+
                 //项目名称，企业名称，姓名，电话，电子邮箱，总投资（万元），总占地面积（亩），一期用地面积（亩）,项目概述
                 if (EmptyUtils.isEmpty(projectName)) {
                     ToastUtils.showShortToast("请填写项目名称");
@@ -217,11 +220,6 @@ public class InformationInputActivity extends BaseActivity {
                     return;
                 }
 
-                if (EmptyUtils.isEmpty(orgName)) {
-                    ToastUtils.showShortToast("请填写企业名称");
-                    etOrgName.requestFocus();
-                    return;
-                }
 
                 if (EmptyUtils.isEmpty(name)) {
                     ToastUtils.showShortToast("请填写姓名");
@@ -290,23 +288,7 @@ public class InformationInputActivity extends BaseActivity {
 
     //获取该页面editext的值与spinner所选中的值
     private void getSpinnerSelect() {
-        spHefs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String sphefs = getResources().getStringArray(R.array.hzfs)[position];
-                if (sphefs.equals("是")) {
-                    hefs = "1";
-                } else {
-                    hefs = "2";
-                }
 
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         spXmlx.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -363,11 +345,11 @@ public class InformationInputActivity extends BaseActivity {
                         city = "3";
                     } else if (city.equals("河北")) {
                         city = "4";
-                    } else if (city.equals("其他")){
+                    } else if (city.equals("其他")) {
                         Intent intent = new Intent(InformationInputActivity.this, SelectCityActivity.class);
                         startActivityForResult(intent, REQUEST_CODE_PICK_CITY);
-                    }else {
-                        city="5";
+                    } else {
+                        city = "5";
                     }
                 }
 
@@ -426,8 +408,8 @@ public class InformationInputActivity extends BaseActivity {
     private void sendInfoToService() {
         Map<String, String> map = new HashMap<>();
         map.put("project_name", projectName);
-        map.put("org_name", orgName);
-        map.put("cooperation", hefs);
+        map.put("investment_entity",dqjz);
+        map.put("current_progress",tzzt);
         map.put("project_type", xmlx);
         map.put("industry", cylb);
         map.put("colony", city);
@@ -544,5 +526,6 @@ public class InformationInputActivity extends BaseActivity {
         });
         App.getInstance().getHttpQueue().add(request);
     }
+
 
 }

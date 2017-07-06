@@ -9,8 +9,8 @@ import java.util.List;
 public class ProjectEditor {
 
     /**
-     * totalpages : 9
-     * projectList : [{"org_name":"刘雯","project_status":"1","project_name":"刘雯","project_id":"4028804d5c1ab906015c1f7047650018","createdate":"2017-05-19","updatedate":"2017-05-19"},{"org_name":"任丘某某工","project_status":"2","project_name":"测试数据20170519防寒服呵呵","project_id":"4028804d5c1ab906015c1f66491c0016","createdate":"2017-05-19","updatedate":"2017-05-19"}]
+     * totalpages : 42
+     * projectList : [{"org_name":null,"project_status":"1","project_name":"22","project_descrip":"33","project_id":"402880085d1718ef015d172a9cda0002","createdate":"2017-07-06","updatedate":"2017-07-06"},{"org_name":null,"project_status":"1","project_name":"333","project_descrip":"33","project_id":"402880085d1718ef015d1727550d0000","createdate":"2017-07-06","updatedate":"2017-07-06"}]
      */
 
     private int totalpages;
@@ -34,26 +34,28 @@ public class ProjectEditor {
 
     public static class ProjectListBean {
         /**
-         * org_name : 刘雯
+         * org_name : null
          * project_status : 1
-         * project_name : 刘雯
-         * project_id : 4028804d5c1ab906015c1f7047650018
-         * createdate : 2017-05-19
-         * updatedate : 2017-05-19
+         * project_name : 22
+         * project_descrip : 33
+         * project_id : 402880085d1718ef015d172a9cda0002
+         * createdate : 2017-07-06
+         * updatedate : 2017-07-06
          */
 
-        private String org_name;
+        private Object org_name;
         private String project_status;
         private String project_name;
+        private String project_descrip;
         private String project_id;
         private String createdate;
         private String updatedate;
 
-        public String getOrg_name() {
+        public Object getOrg_name() {
             return org_name;
         }
 
-        public void setOrg_name(String org_name) {
+        public void setOrg_name(Object org_name) {
             this.org_name = org_name;
         }
 
@@ -71,6 +73,14 @@ public class ProjectEditor {
 
         public void setProject_name(String project_name) {
             this.project_name = project_name;
+        }
+
+        public String getProject_descrip() {
+            return project_descrip;
+        }
+
+        public void setProject_descrip(String project_descrip) {
+            this.project_descrip = project_descrip;
         }
 
         public String getProject_id() {

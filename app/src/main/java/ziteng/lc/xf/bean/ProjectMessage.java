@@ -9,9 +9,10 @@ import java.util.List;
 
 public class ProjectMessage {
 
+
     /**
-     * totalpages : 1
-     * projectList : [{"org_name":"天津华林同创建材有限公司","time":"2017-04-14","project_name":"纳米自洁铝板项目","project_id":"531737285b6b9dc5015b6b9f9c5e0000"},{"org_name":"河北鹏盛天冠智能仓储设备制造有限公司","time":"2017-04-13","project_name":"河北鹏盛天冠智能仓储设备制造项目","project_id":"402881ea5b6b5f36015b6b64346c0001"},{"org_name":"河北亦乐纸塑包装科技有限公司","time":"2017-04-11","project_name":"河北亦乐纸塑包装项目","project_id":"402881ea5b6b5f36015b6b627cfd0000"}]
+     * totalpages : 10
+     * projectList : [{"org_name":"任丘市某某公司","time":"2017-06-27","project_name":"2017627测试12","project_descrip":"嘎哈呢明明白白加工费吃噶","project_id":"4028804d5ce78a01015ce845601b000e"}]
      */
 
     private int totalpages;
@@ -35,15 +36,17 @@ public class ProjectMessage {
 
     public static class ProjectListBean {
         /**
-         * org_name : 天津华林同创建材有限公司
-         * time : 2017-04-14
-         * project_name : 纳米自洁铝板项目
-         * project_id : 531737285b6b9dc5015b6b9f9c5e0000
+         * org_name : 任丘市某某公司
+         * time : 2017-06-27
+         * project_name : 2017627测试12
+         * project_descrip : 嘎哈呢明明白白加工费吃噶
+         * project_id : 4028804d5ce78a01015ce845601b000e
          */
 
         private String org_name;
         private String time;
         private String project_name;
+        private String project_descrip;
         private String project_id;
 
         public String getOrg_name() {
@@ -68,6 +71,14 @@ public class ProjectMessage {
 
         public void setProject_name(String project_name) {
             this.project_name = project_name;
+        }
+
+        public String getProject_descrip() {
+            return project_descrip;
+        }
+
+        public void setProject_descrip(String project_descrip) {
+            this.project_descrip = project_descrip;
         }
 
         public String getProject_id() {

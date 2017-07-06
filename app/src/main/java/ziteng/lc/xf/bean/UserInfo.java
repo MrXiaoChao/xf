@@ -8,17 +8,20 @@ package ziteng.lc.xf.bean;
 public class UserInfo {
 
     /**
-     * org_name :
-     * phone : 15201339284
+     * org_name : 工信局
+     * phone : 15175238786
      * pwd : 670b14728ad9902aecba32e22fa4f6bd
-     * username : lc
+     * username : gxj
      * issuccess : true
-     * status : 1
-     * name : 罗超
+     * link_man :
+     * email :
+     * status : 3
+     * name : 工信局
      * role :
      * org_code :
-     * idcard : 431024199001172713
-     * personuuid : 4028804d5bb2aea4015bcd944f34000c
+     * idcard : 130130199112080912
+     * personuuid : 402881e85b5fdd34015b5ffd43960048
+     * office_phone :
      */
 
     private String org_name;
@@ -26,12 +29,15 @@ public class UserInfo {
     private String pwd;
     private String username;
     private boolean issuccess;
+    private String link_man;
+    private String email;
     private String status;
     private String name;
     private String role;
     private String org_code;
     private String idcard;
     private String personuuid;
+    private String office_phone;
 
     public String getOrg_name() {
         return org_name;
@@ -71,6 +77,22 @@ public class UserInfo {
 
     public void setIssuccess(boolean issuccess) {
         this.issuccess = issuccess;
+    }
+
+    public String getLink_man() {
+        return link_man;
+    }
+
+    public void setLink_man(String link_man) {
+        this.link_man = link_man;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getStatus() {
@@ -119,5 +141,13 @@ public class UserInfo {
 
     public void setPersonuuid(String personuuid) {
         this.personuuid = personuuid;
+    }
+
+    public String getOffice_phone() {
+        return office_phone;
+    }
+
+    public void setOffice_phone(String office_phone) {
+        this.office_phone = office_phone;
     }
 }

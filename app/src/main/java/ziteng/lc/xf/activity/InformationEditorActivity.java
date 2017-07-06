@@ -18,12 +18,9 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.blankj.utilcode.utils.EmptyUtils;
-import com.blankj.utilcode.utils.RegexUtils;
 import com.blankj.utilcode.utils.StringUtils;
 import com.blankj.utilcode.utils.ToastUtils;
 import com.google.gson.reflect.TypeToken;
-import com.zaaach.citypicker.CityPickerActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,8 +53,6 @@ public class InformationEditorActivity extends BaseActivity {
     TextView tvTooltarTitle;
     @BindView(R.id.project_name)
     EditText projectName;
-    @BindView(R.id.org_name)
-    EditText orgName;
     @BindView(R.id.name)
     EditText name;
     @BindView(R.id.phone)
@@ -88,8 +83,6 @@ public class InformationEditorActivity extends BaseActivity {
     EditText taxContribution;
     @BindView(R.id.employment_pull)
     EditText employmentPull;
-    @BindView(R.id.sp_hefs)
-    Spinner spHefs;
     @BindView(R.id.sp_xmlx)
     Spinner spXmlx;
     @BindView(R.id.sp_cylb)
@@ -102,6 +95,10 @@ public class InformationEditorActivity extends BaseActivity {
     Spinner sp_Hzlb;
     @BindView(R.id.tv_date)
     TextView tvDate;
+    @BindView(R.id.et_tzzt)
+    EditText etTzzt;
+    @BindView(R.id.et_dqjz)
+    EditText etDqjz;
     private ArrayAdapter<String> mAdapterSphefd;
     private String[] mStringArraySphefd;
     private ArrayAdapter<String> mAdapterSpxmlx;
@@ -120,7 +117,6 @@ public class InformationEditorActivity extends BaseActivity {
     private String xmbz1;
     private String hzlb1;
     private String projectName1;
-    private String orgName1;
     private String name1;
     private String phone1;
     private String email1;
@@ -140,6 +136,8 @@ public class InformationEditorActivity extends BaseActivity {
     private static final int REQUEST_CODE_PICK_CITY = 0;
     private String project_id;
     private String project_status;
+    private String current_progress;
+    private String investment_entity;
 
 
     @Override
@@ -172,7 +170,6 @@ public class InformationEditorActivity extends BaseActivity {
         //要求，项目状态只有在“未签约”时才能修改；其他状态下只能查看内容，不能进行修改，（要去掉 保存 按钮，内容为只读状态）
         if (!project_status.equals("1")) {
             setEditextToEnabled(projectName, false);
-            setEditextToEnabled(orgName, false);
             setEditextToEnabled(name, false);
             setEditextToEnabled(phone, false);
             setEditextToEnabled(email, false);
@@ -187,7 +184,6 @@ public class InformationEditorActivity extends BaseActivity {
             setEditextToEnabled(yearOutput, false);
             setEditextToEnabled(taxContribution, false);
             setEditextToEnabled(employmentPull, false);
-            setSpinnerToEnabled(spHefs, false);
             setSpinnerToEnabled(spXmlx, false);
             setSpinnerToEnabled(spCylb, false);
             setSpinnerToEnabled(spXmbz, false);
@@ -196,6 +192,8 @@ public class InformationEditorActivity extends BaseActivity {
             tvDate.setFocusableInTouchMode(false);
             tvDate.setEnabled(false);
             setSpinnerToEnabled(spCity, false);
+            setEditextToEnabled(etDqjz, false);
+            setEditextToEnabled(etTzzt, false);
         }
     }
 
@@ -215,9 +213,6 @@ public class InformationEditorActivity extends BaseActivity {
 
     //修改Spinner默认字体的大小与颜色
     private void changSpinnerText() {
-        mStringArraySphefd = getResources().getStringArray(R.array.hzfs);
-        mAdapterSphefd = new TestArrayAdapter(InformationEditorActivity.this, mStringArraySphefd, true);
-        spHefs.setAdapter(mAdapterSphefd);
 
         mStringArraySpxmlx = getResources().getStringArray(R.array.xmlx);
         mAdapterSpxmlx = new TestArrayAdapter(InformationEditorActivity.this, mStringArraySpxmlx, true);
@@ -240,7 +235,7 @@ public class InformationEditorActivity extends BaseActivity {
 
     //项目信息回显
     private String city3;
-    private String[] newCitys=new String[10];
+    private String[] newCitys = new String[10];
 
     private void getDataFromSerVice(String project_id) {
         Map<String, String> map = new HashMap<>();
@@ -248,8 +243,9 @@ public class InformationEditorActivity extends BaseActivity {
         GsonRequest<ProjectInfoEditext> request = new GsonRequest<ProjectInfoEditext>(Request.Method.POST, map, Url.InformationEditext, ProjectInfoEditext.class, new Response.Listener<ProjectInfoEditext>() {
             @Override
             public void onResponse(ProjectInfoEditext response) {
+                etDqjz.setText(response.getCurrent_progress());
+                etTzzt.setText(response.getInvestment_entity());
                 projectName.setText(response.getProject_name());
-                orgName.setText(response.getOrg_name());
                 name.setText(response.getName());
                 phone.setText(response.getPhone());
                 email.setText(response.getEmail());
@@ -265,12 +261,7 @@ public class InformationEditorActivity extends BaseActivity {
                 employmentPull.setText(response.getEmployment_pull());
                 //DateFormat.format("yyyy-MM-dd", response.getExpect_date())
                 tvDate.setText((CharSequence) response.getExpect_date());
-                //是否外资
-                if (response.getCooperation().equals("1")) {
-                    spHefs.setSelection(0);
-                } else {
-                    spHefs.setSelection(1);
-                }
+
                 //项目类型
                 if (response.getProject_type().equals("1")) {
                     spXmlx.setSelection(0);
@@ -354,23 +345,6 @@ public class InformationEditorActivity extends BaseActivity {
     //获取该页面editext的值与spinner所选中的值
     private void getSpinnerSelect() {
 
-        spHefs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String sphefs = getResources().getStringArray(R.array.hzfs)[position];
-                if (sphefs.equals("是")) {
-                    hefs1 = "1";
-                } else {
-                    hefs1 = "2";
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         spXmlx.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -488,13 +462,6 @@ public class InformationEditorActivity extends BaseActivity {
                     projectName1 = (String) projectName.getHint();
                 }
 
-                //企业名称
-                if (!orgName.getText().toString().trim().isEmpty()) {
-                    orgName1 = orgName.getText().toString().trim();
-                } else {
-                    orgName1 = (String) orgName.getHint();
-                }
-
                 //姓名
                 if (!name.getText().toString().trim().isEmpty()) {
                     name1 = name.getText().toString().trim();
@@ -583,7 +550,10 @@ public class InformationEditorActivity extends BaseActivity {
                 } else {
                     situations1 = (String) situations.getHint();
                 }
-
+                //获取当前进展
+                current_progress = etDqjz.getText().toString().trim();
+                //投资主体
+                investment_entity = etTzzt.getText().toString().trim();
                 date11 = tvDate.getText().toString().trim();
                 getCityText();
                 sendInfoToService();
@@ -632,8 +602,8 @@ public class InformationEditorActivity extends BaseActivity {
         Map<String, String> map = new HashMap<>();
         map.put("project_id", project_id);
         map.put("project_name", projectName1);
-        map.put("org_name", orgName1);
-        map.put("cooperation", hefs1);
+        map.put("investment_entity", investment_entity);
+        map.put("current_progress", current_progress);
         map.put("project_type", xmlx1);
         map.put("industry", cylb1);
         map.put("colony", city1);
@@ -685,7 +655,7 @@ public class InformationEditorActivity extends BaseActivity {
                 if (!StringUtils.isEmpty(city3)) {
                     city1 = StringArray(city3)[position];
                 } else {
-                    if (newCitys!=null) {
+                    if (newCitys != null) {
                         city1 = StringArray(city3)[position];
                     } else {
                         city1 = getResources().getStringArray(R.array.city)[position];
@@ -735,4 +705,5 @@ public class InformationEditorActivity extends BaseActivity {
             }
         }
     }
+
 }

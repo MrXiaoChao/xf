@@ -56,7 +56,7 @@ public class ProjectEditorListAdapter extends BaseAdapter{
             holder= (ViewHolder) convertView.getTag();
         }
         holder.tvtatil.setText((position+1+"、")+projectEditor.getProjectList().get(position).getProject_name());
-        holder.tvcompany.setText(projectEditor.getProjectList().get(position).getOrg_name());
+        holder.tvcompany.setText(projectEditor.getProjectList().get(position).getProject_descrip());
         holder.tvtime.setText(projectEditor.getProjectList().get(position).getCreatedate());
         return convertView;
     }
