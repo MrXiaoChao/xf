@@ -69,7 +69,6 @@ public class ProjectEditorActivity extends BaseActivity {
             public void onResponse(final ProjectEditor response) {
                 if (response != null) {
                     adapter = new ProjectEditorListAdapter(ProjectEditorActivity.this,response);
-                    String a ="a";
                 }
                 if (adapter != null) {
                     lvProject.setAdapter(adapter);

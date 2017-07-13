@@ -57,7 +57,7 @@ public class ProjectStatementListAdapter extends BaseAdapter {
             holder= (ViewHolder) convertView.getTag();
         }
             holder.tvtatil.setText((position+1+"、")+list.get(position).getProject_name());
-            holder.tvcompany.setText(list.get(position).getOrg_name());
+            holder.tvcompany.setText(list.get(position).getProject_descrip());
             holder.tvtime.setText(list.get(position).getCreatedate());
         return convertView;
     }

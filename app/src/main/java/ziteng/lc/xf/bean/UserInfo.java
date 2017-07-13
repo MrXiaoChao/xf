@@ -40,7 +40,7 @@ public class UserInfo {
     private String office_phone;
 
     public String getOrg_name() {
-        return org_name;
+        return org_name==null?"":org_name;
     }
 
     public void setOrg_name(String org_name) {
@@ -48,7 +48,7 @@ public class UserInfo {
     }
 
     public String getPhone() {
-        return phone;
+        return phone==null?"":phone;
     }
 
     public void setPhone(String phone) {
@@ -80,7 +80,7 @@ public class UserInfo {
     }
 
     public String getLink_man() {
-        return link_man;
+        return link_man==null?"":link_man;
     }
 
     public void setLink_man(String link_man) {
@@ -88,7 +88,7 @@ public class UserInfo {
     }
 
     public String getEmail() {
-        return email;
+        return email==null?"":email;
     }
 
     public void setEmail(String email) {
@@ -104,7 +104,7 @@ public class UserInfo {
     }
 
     public String getName() {
-        return name;
+        return name==null?"":name;
     }
 
     public void setName(String name) {
@@ -112,7 +112,7 @@ public class UserInfo {
     }
 
     public String getRole() {
-        return role;
+        return role==null?"":role;
     }
 
     public void setRole(String role) {
@@ -124,7 +124,7 @@ public class UserInfo {
     }
 
     public void setOrg_code(String org_code) {
-        this.org_code = org_code;
+        this.org_code = org_code==null?"":org_code;
     }
 
     public String getIdcard() {
@@ -132,7 +132,7 @@ public class UserInfo {
     }
 
     public void setIdcard(String idcard) {
-        this.idcard = idcard;
+        this.idcard = idcard==null?"":idcard;
     }
 
     public String getPersonuuid() {
@@ -140,11 +140,11 @@ public class UserInfo {
     }
 
     public void setPersonuuid(String personuuid) {
-        this.personuuid = personuuid;
+        this.personuuid = personuuid==null?"":personuuid;
     }
 
     public String getOffice_phone() {
-        return office_phone;
+        return office_phone==null?"":office_phone;
     }
 
     public void setOffice_phone(String office_phone) {

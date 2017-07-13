@@ -49,6 +49,10 @@ public class BasicInfoActovity extends BaseActivity {
     TextView tvEmail;
     @BindView(R.id.rl_email)
     RelativeLayout rlEmail;
+    @BindView(R.id.rl_sfzh)
+    RelativeLayout rlSfzh;
+    @BindView(R.id.tv_sfz)
+    TextView tvSfz;
 
     @Override
     protected int getLayout() {
@@ -66,18 +70,28 @@ public class BasicInfoActovity extends BaseActivity {
         String office_phone = (String) SPUtils.get(BasicInfoActovity.this, "office_phone", "");
         String email = (String) SPUtils.get(BasicInfoActovity.this, "email", "");
         String status = (String) SPUtils.get(BasicInfoActovity.this, "status", "");
+        String org_code = (String) SPUtils.get(BasicInfoActovity.this, "org_code", "");
         if (StringUtils.equals("3", status) || StringUtils.equals("4", status) || StringUtils.equals("5", status)) {
             rlEmail.setVisibility(View.VISIBLE);
             rlLinkMan.setVisibility(View.VISIBLE);
             rlOfficePhone.setVisibility(View.VISIBLE);
+            rlSfzh.setVisibility(View.GONE);
+            rlPhone.setVisibility(View.GONE);
         }
-
+        if (StringUtils.equals("2", status)) {
+            tvSfz.setText("机构编码");
+        }
 
         if (!StringUtils.isEmpty(phone)) {
             tvPhoneNum.setText(StringReplaceUtil.phoneNumberReplaceWithStar(phone));
         }
-        if (!StringUtils.isEmpty(idcard)) {
-            tvIdcard.setText(StringReplaceUtil.idCardReplaceWithStar(idcard));
+        //电话号码 机构编码
+        if (StringUtils.equals("2", status)) {
+            tvIdcard.setText(org_code);
+        } else {
+            if (!StringUtils.isEmpty(idcard)) {
+                tvIdcard.setText(StringReplaceUtil.idCardReplaceWithStar(idcard));
+            }
         }
         tvUsename.setText(usename);
         tvName.setText(name);

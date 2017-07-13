@@ -11,6 +11,15 @@ public class ProjectStatementList {
     private String project_name;
     private String project_id;
     private String createdate;
+    private String project_descrip;
+
+    public String getProject_descrip() {
+        return project_descrip;
+    }
+
+    public void setProject_descrip(String project_descrip) {
+        this.project_descrip = project_descrip;
+    }
 
     public String getOrg_name() {
         return org_name;

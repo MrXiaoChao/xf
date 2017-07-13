@@ -56,7 +56,7 @@ public class ProjectWarnActivity extends BaseActivity {
         personuuid = (String) SPUtils.get(ProjectWarnActivity.this, "personuuid", "");
         status = (String) SPUtils.get(ProjectWarnActivity.this,"status","");
         if (!EmptyUtils.isEmpty(personuuid)) {
-            getDataFromService(personuuid,1,20);
+            getDataFromService(personuuid,1,100);
         }
     }
 

@@ -1,6 +1,8 @@
 package ziteng.lc.xf.activity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -14,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -24,9 +27,14 @@ import com.blankj.utilcode.utils.StringUtils;
 import com.blankj.utilcode.utils.ToastUtils;
 import com.google.gson.reflect.TypeToken;
 
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +49,7 @@ import ziteng.lc.xf.bean.Sscy;
 import ziteng.lc.xf.bean.Success;
 import ziteng.lc.xf.http.GsonRequest;
 import ziteng.lc.xf.http.Url;
+import ziteng.lc.xf.util.ListUtils;
 import ziteng.lc.xf.widegt.SPUtils;
 
 /**
@@ -53,14 +62,14 @@ public class InformationInputActivity extends BaseActivity {
     ImageView ivToolbarBack;
     @BindView(R.id.tv_tooltar_title)
     TextView tvTooltarTitle;
-    @BindView(R.id.sp_xmlx)
-    Spinner spXmlx;
-    @BindView(R.id.sp_cylb)
-    Spinner spCylb;
-    @BindView(R.id.sp_city)
-    Spinner spCity;
-    @BindView(R.id.sp_xmbz)
-    Spinner spXmbz;
+    @BindView(R.id.tv_xmlx)
+    TextView tvXmlx;
+    @BindView(R.id.tv_cylb)
+    TextView tvCylb;
+    @BindView(R.id.tv_city)
+    TextView tvCity;
+    @BindView(R.id.tv_xmbz)
+    TextView tvXmbz;
     @BindView(R.id.sp_hzlb)
     Spinner sp_Hzlb;
     @BindView(R.id.et_project_name)
@@ -163,30 +172,13 @@ public class InformationInputActivity extends BaseActivity {
 
     //修改Spinner默认字体的大小与颜色
     private void changSpinnerText() {
-
-        mStringArraySpxmlx = getResources().getStringArray(R.array.xmlx);
-        mAdapterSpxmlx = new TestArrayAdapter(InformationInputActivity.this, mStringArraySpxmlx, true);
-        spXmlx.setAdapter(mAdapterSpxmlx);
-
-        mStringArraycity = getResources().getStringArray(R.array.city);
-        mAdaptercity = new TestArrayAdapter(InformationInputActivity.this, mStringArraycity, true);
-        spCity.setAdapter(mAdaptercity);
-
-//        mStringArrayspCylb = getResources().getStringArray(R.array.cylb);
-//        mAdapterspCylb = new TestArrayAdapter(InformationInputActivity.this, mStringArrayspCylb);
-//        spCylb.setAdapter(mAdapterspCylb);
-
-        mStringArrayspXmbz = getResources().getStringArray(R.array.xmbz);
-        mAdapterspXmbz = new TestArrayAdapter(InformationInputActivity.this, mStringArrayspXmbz, true);
-        spXmbz.setAdapter(mAdapterspXmbz);
-
         mStringArrayspHzlx = getResources().getStringArray(R.array.hzlb);
         mAdapterspHzlx = new TestArrayAdapter(InformationInputActivity.this, mStringArrayspHzlx, true);
         sp_Hzlb.setAdapter(mAdapterspHzlx);
     }
 
 
-    @OnClick({R.id.iv_toolbar_back, R.id.btn_save, R.id.btn_cancel, R.id.et_date1})
+    @OnClick({R.id.iv_toolbar_back, R.id.btn_save, R.id.btn_cancel, R.id.et_date1, R.id.tv_xmlx, R.id.tv_xmbz, R.id.tv_cylb})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_toolbar_back:
@@ -219,7 +211,6 @@ public class InformationInputActivity extends BaseActivity {
                     etProjectName.requestFocus();
                     return;
                 }
-
 
                 if (EmptyUtils.isEmpty(name)) {
                     ToastUtils.showShortToast("请填写姓名");
@@ -283,106 +274,28 @@ public class InformationInputActivity extends BaseActivity {
             case R.id.et_date1://时间选择器
                 showDateDialog();
                 break;
+            case R.id.tv_xmlx:
+                creatDialogXMLX();
+                break;
+            case R.id.tv_xmbz:
+                creatDialogXMBZ();
+                break;
+            case R.id.tv_cylb:
+                creatDialogCYLB();
+                break;
         }
     }
 
     //获取该页面editext的值与spinner所选中的值
     private void getSpinnerSelect() {
-
-        spXmlx.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String spxmlx = getResources().getStringArray(R.array.xmlx)[position];
-                if (spxmlx.equals("工业")) {
-                    xmlx = "1";
-                } else if (spxmlx.equals("农业")) {
-                    xmlx = "2";
-                } else if (spxmlx.equals("服务业")) {
-                    xmlx = "3";
-                } else if (spxmlx.equals("旅游业")) {
-                    xmlx = "4";
-                } else if (spxmlx.equals("其他")) {
-                    xmlx = "5";
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        spCylb.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String spcylb = list.get(position);
-                for (Sscy sscy : sscyList) {
-                    if (spcylb.equals(sscy.getCategory_name())) {
-                        cylb = sscy.getCategory_id();
-                    }
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         //城市选择
-        spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        tvCity.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (!StringUtils.isEmpty(city1)) {
-                    city = StringArray(city1)[position];
-                } else {
-                    city = getResources().getStringArray(R.array.city)[position];
-                }
-                if (!city.isEmpty()) {
-                    if (city.equals("北京")) {
-                        city = "1";
-                    } else if (city.equals("天津")) {
-                        city = "2";
-                    } else if (city.equals("上海")) {
-                        city = "3";
-                    } else if (city.equals("河北")) {
-                        city = "4";
-                    } else if (city.equals("其他")) {
-                        Intent intent = new Intent(InformationInputActivity.this, SelectCityActivity.class);
-                        startActivityForResult(intent, REQUEST_CODE_PICK_CITY);
-                    } else {
-                        city = "5";
-                    }
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onClick(View v) {
+                creatDialog();
             }
         });
 
-        spXmbz.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String spxmbz = getResources().getStringArray(R.array.xmbz)[position];
-                if (spxmbz.equals("全球500强")) {
-                    xmbz = "1";
-                } else if (spxmbz.equals("全国500强")) {
-                    xmbz = "2";
-                } else if (spxmbz.equals("央企")) {
-                    xmbz = "3";
-                } else if (spxmbz.equals("上市公司")) {
-                    xmbz = "4";
-                } else if (spxmbz.equals("其他")) {
-                    xmbz = "5";
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         sp_Hzlb.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -408,8 +321,8 @@ public class InformationInputActivity extends BaseActivity {
     private void sendInfoToService() {
         Map<String, String> map = new HashMap<>();
         map.put("project_name", projectName);
-        map.put("investment_entity",dqjz);
-        map.put("current_progress",tzzt);
+        map.put("investment_entity", dqjz);
+        map.put("current_progress", tzzt);
         map.put("project_type", xmlx);
         map.put("industry", cylb);
         map.put("colony", city);
@@ -473,29 +386,17 @@ public class InformationInputActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK) {
             if (data != null) {
-                city1 = data.getStringExtra("cityname");
-                if (city1 != null) {
-                    city = "5";
-                    StringArray(city1)[5] = city1;
-                    mAdaptercity = new TestArrayAdapter(InformationInputActivity.this, StringArray(city1), true);
-                    spCity.setAdapter(mAdaptercity);
-                    spCity.setSelection(5);
-                    pronotes = city1;
+                for (int i = 0; i < stringList.size(); i++) {
+                    if (stringList.get(i).equals("其他")) {
+                        stringList.remove(i);
+                        break;
+                    }
                 }
+                city1 = data.getStringExtra("cityname");
+                pronotes = city1;
+                stringList.add(city1);
             }
-
         }
-    }
-
-    //在数组中增加一个元素
-    public String[] StringArray(String s) {
-        List<String> list = new ArrayList<String>();
-        for (int i = 0; i < mStringArraycity.length; i++) {
-            list.add(mStringArraycity[i]);
-        }
-        list.add(5, s);
-        String[] newStr = list.toArray(new String[1]); //返回一个包含所有对象的指定类型的数组
-        return newStr;
     }
 
     //获取所属产业类别接口
@@ -512,11 +413,6 @@ public class InformationInputActivity extends BaseActivity {
                         list.add(sscy.getCategory_name());
                     }
                 }
-                if (list != null && list.size() > 0) {
-                    TestArrayAdapter adapter = new TestArrayAdapter(InformationInputActivity.this, list, false);
-                    spCylb.setAdapter(adapter);
-                }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -527,5 +423,197 @@ public class InformationInputActivity extends BaseActivity {
         App.getInstance().getHttpQueue().add(request);
     }
 
+    //创建选择城市的dialog
+    List<String> stringList = new LinkedList<>();
+    List<String> stringList1 = new LinkedList<>();
 
+    private void creatDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(InformationInputActivity.this);
+        builder.setTitle("项目属地");
+        final String[] hobbies = {"北京", "天津", "河北", "上海", "其他"};
+
+        builder.setMultiChoiceItems(hobbies, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (which == 4 && isChecked) {
+                    Intent intent = new Intent(InformationInputActivity.this, SelectCityActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_PICK_CITY);
+                }
+                if (isChecked) {
+                    stringList.add(hobbies[which]);
+                }
+                if (!isChecked) {
+                    stringList.remove(hobbies[which]);
+                }
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tvCity.setText(ListUtils.listToString(stringList));
+                //把这种字符串 北京,天津 改为 1,2
+                for (String s : stringList) {
+                    if (StringUtils.equals(s, "北京")) {
+                        stringList1.add("1");
+                    } else if (StringUtils.equals(s, "天津")) {
+                        stringList1.add("2");
+                    } else if (StringUtils.equals(s, "河北")) {
+                        stringList1.add("3");
+                    } else if (StringUtils.equals(s, "上海")) {
+                        stringList1.add("4");
+                    } else {
+                        stringList1.add("5");
+                    }
+                }
+                city = ListUtils.listToString(stringList1);
+                stringList.clear();
+                stringList1.clear();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    //创建选择项目类型的dialog
+    List<String> stringListXMLX = new LinkedList<>();
+    List<String> stringListXMLX1 = new LinkedList<>();
+
+
+    private void creatDialogXMLX() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(InformationInputActivity.this);
+        builder.setTitle("项目类型");
+        final String[] hobbies = {"工业", "农业", "服务业", "旅游业", "其他"};
+        builder.setMultiChoiceItems(hobbies, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (isChecked) {
+                    stringListXMLX.add(hobbies[which]);
+                }
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tvXmlx.setText(ListUtils.listToString(stringListXMLX));
+                for (String s : stringListXMLX) {
+                    if (StringUtils.equals(s, "工业")) {
+                        stringListXMLX1.add("1");
+                    } else if (StringUtils.equals(s, "农业")) {
+                        stringListXMLX1.add("2");
+                    } else if (StringUtils.equals(s, "服务业")) {
+                        stringListXMLX1.add("3");
+                    } else if (StringUtils.equals(s, "旅游业")) {
+                        stringListXMLX1.add("4");
+                    } else {
+                        stringListXMLX1.add("5");
+                    }
+                }
+                xmlx = ListUtils.listToString(stringListXMLX1);
+                stringListXMLX.clear();
+                stringListXMLX1.clear();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    //创建选择项目类型的dialog
+    List<String> stringListXMBZ = new LinkedList<>();
+    List<String> stringListXMBZ1 = new LinkedList<>();
+
+    private void creatDialogXMBZ() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(InformationInputActivity.this);
+        builder.setTitle("项目备注");
+        final String[] hobbies = {"全球500强", "全国500强", "央企", "上市公司", "其他"};
+        builder.setMultiChoiceItems(hobbies, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (isChecked) {
+                    stringListXMBZ.add(hobbies[which]);
+                }
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tvXmbz.setText(ListUtils.listToString(stringListXMBZ));
+                for (String s : stringListXMBZ) {
+                    if (StringUtils.equals(s,"全球500强")) {
+                        stringListXMBZ1.add("1");
+                    } else if (StringUtils.equals(s,"全国500强")) {
+                        stringListXMBZ1.add("2");
+                    } else if (StringUtils.equals(s,"央企")) {
+                        stringListXMBZ1.add("3");
+                    } else if (StringUtils.equals(s,"上市公司")) {
+                        stringListXMBZ1.add("4");
+                    } else if (StringUtils.equals(s,"其他")){
+                        stringListXMBZ1.add("5");
+                    }
+                }
+                xmbz = ListUtils.listToString(stringListXMBZ1);
+                stringListXMBZ.clear();
+                stringListXMBZ1.clear();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    //创建所属类别的dialog
+    List<String> stringListSSLB = new LinkedList<>();
+    List<String> stringListSSLB1 = new LinkedList<>();
+
+    private void creatDialogCYLB() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(InformationInputActivity.this);
+        builder.setTitle("产业类别");
+        final String[] hobbies = ListUtils.listToStrings(list);
+
+        builder.setMultiChoiceItems(hobbies, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (isChecked) {
+                    stringListSSLB.add(hobbies[which]);
+                }
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tvCylb.setText(ListUtils.listToString(stringListSSLB));
+                for (int i = 0; i < stringListSSLB.size(); i++) {
+                    for (Sscy sscy : sscyList) {
+                        if (sscy.getCategory_name().equals(stringListSSLB.get(i))) {
+                            stringListSSLB1.add(sscy.getCategory_id());
+                        }
+                    }
+                }
+                cylb = ListUtils.listToString(stringListSSLB1);
+                Log.i("lc",cylb);
+                stringListSSLB.clear();
+                stringListSSLB1.clear();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
 }

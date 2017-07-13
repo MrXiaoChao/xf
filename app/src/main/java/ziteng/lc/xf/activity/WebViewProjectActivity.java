@@ -1,8 +1,10 @@
 package ziteng.lc.xf.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -54,6 +56,7 @@ public class WebViewProjectActivity extends BaseActivity {
         WebSettings setting = webView.getSettings();
         setting.setJavaScriptEnabled(true);//JS交互
         webView.setWebChromeClient(new WebViewChromeClient());
+        webView.setDownloadListener(new MyWebViewDownLoadListener());
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -89,5 +92,14 @@ public class WebViewProjectActivity extends BaseActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+    private class MyWebViewDownLoadListener implements DownloadListener {
+
+        @Override
+        public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+            Uri uri = Uri.parse(url);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
     }
 }

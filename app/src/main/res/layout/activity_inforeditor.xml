@@ -135,8 +135,11 @@
                 android:layout_weight="1"
                 android:background="@drawable/et_bround">
 
-                <Spinner
-                    android:id="@+id/sp_xmlx"
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center_vertical"
+                    android:textSize="11sp"
+                    android:id="@+id/tv_xmlx"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical" />
@@ -173,8 +176,11 @@
                 android:layout_weight="1"
                 android:background="@drawable/et_bround">
 
-                <Spinner
-                    android:id="@+id/sp_cylb"
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center_vertical"
+                    android:textSize="11sp"
+                    android:id="@+id/tv_cylb"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical" />
@@ -210,8 +216,11 @@
                 android:layout_weight="1"
                 android:background="@drawable/et_bround">
 
-                <Spinner
-                    android:id="@+id/sp_city"
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center_vertical"
+                    android:textSize="11sp"
+                    android:id="@+id/tv_city"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical" />
@@ -249,8 +258,11 @@
                 android:layout_weight="1"
                 android:background="@drawable/et_bround">
 
-                <Spinner
-                    android:id="@+id/sp_xmbz"
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center_vertical"
+                    android:textSize="11sp"
+                    android:id="@+id/tv_xmbz"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"/>

@@ -5,13 +5,6 @@
         <item>否</item>
     </string-array>
 
-    <string-array name="xmlx">
-        <item>工业</item>
-        <item>农业</item>
-        <item>服务业</item>
-        <item>旅游业</item>
-        <item>其他</item>
-    </string-array>
 
     <string-array name="cylb">
         <item>新材料</item>
@@ -36,13 +29,7 @@
         <item>其他</item>
     </string-array>
 
-    <string-array name="xmbz">
-        <item>全球500强</item>
-        <item>全国500强</item>
-        <item>央企</item>
-        <item>上市公司</item>
-        <item>其他</item>
-    </string-array>
+
 
     <string-array name="hzlb">
         <item>鼓励类</item>

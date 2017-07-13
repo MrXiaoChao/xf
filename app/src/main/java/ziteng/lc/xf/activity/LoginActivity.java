@@ -140,6 +140,7 @@ public class LoginActivity extends BaseActivity {
                     String link_man=response.getLink_man();
                     String office_phone=response.getOffice_phone();
                     String email=response.getEmail();
+                    String org_code=response.getOrg_code();
                     //status 1：个人账号2：企业账号3：责任单位4：市领导5：管理员
                     String status=response.getStatus();
                     if (sp == 3) {
@@ -168,6 +169,7 @@ public class LoginActivity extends BaseActivity {
                             SPUtils.put(LoginActivity.this, "usename", usename);
                             SPUtils.put(LoginActivity.this, "org_name", org_name);
                             SPUtils.put(LoginActivity.this,"status",status);
+                            SPUtils.put(LoginActivity.this,"org_code",org_code);
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                         } else {

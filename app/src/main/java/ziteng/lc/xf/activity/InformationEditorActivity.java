@@ -1,6 +1,8 @@
 package ziteng.lc.xf.activity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -25,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +43,7 @@ import ziteng.lc.xf.bean.Sscy;
 import ziteng.lc.xf.bean.Success;
 import ziteng.lc.xf.http.GsonRequest;
 import ziteng.lc.xf.http.Url;
+import ziteng.lc.xf.util.ListUtils;
 
 /**
  * Created by luochao on 2017/4/12.
@@ -83,14 +87,14 @@ public class InformationEditorActivity extends BaseActivity {
     EditText taxContribution;
     @BindView(R.id.employment_pull)
     EditText employmentPull;
-    @BindView(R.id.sp_xmlx)
-    Spinner spXmlx;
-    @BindView(R.id.sp_cylb)
-    Spinner spCylb;
-    @BindView(R.id.sp_city)
-    Spinner spCity;
-    @BindView(R.id.sp_xmbz)
-    Spinner spXmbz;
+    @BindView(R.id.tv_xmlx)
+    TextView tvXmlx;
+    @BindView(R.id.tv_cylb)
+    TextView tvCylb;
+    @BindView(R.id.tv_city)
+    TextView tvCity;
+    @BindView(R.id.tv_xmbz)
+    TextView tvXmbz;
     @BindView(R.id.sp_hzlb)
     Spinner sp_Hzlb;
     @BindView(R.id.tv_date)
@@ -99,18 +103,9 @@ public class InformationEditorActivity extends BaseActivity {
     EditText etTzzt;
     @BindView(R.id.et_dqjz)
     EditText etDqjz;
-    private ArrayAdapter<String> mAdapterSphefd;
-    private String[] mStringArraySphefd;
-    private ArrayAdapter<String> mAdapterSpxmlx;
-    private String[] mStringArraySpxmlx;
-    private ArrayAdapter<String> mAdapterspXmbz;
-    private String[] mStringArrayspXmbz;
     private ArrayAdapter<String> mAdapterspHzlx;
     private String[] mStringArrayspHzlx;
-    private ArrayAdapter<String> mAdapterspCity;
-    private String[] mStringArrayspCity;
 
-    private String hefs1;
     private String xmlx1;
     private String cylb1;
     private String city1;
@@ -132,6 +127,7 @@ public class InformationEditorActivity extends BaseActivity {
     private String projectDescrip1;
     private String situations1;
     private String pronotes;
+    private String city;
 
     private static final int REQUEST_CODE_PICK_CITY = 0;
     private String project_id;
@@ -157,7 +153,6 @@ public class InformationEditorActivity extends BaseActivity {
         getSpinnerSelect();
         getStringforintent();
         getDataFromSerVice(project_id);
-        getCityText();
     }
 
     //获取上一个页面传过来的值
@@ -184,14 +179,12 @@ public class InformationEditorActivity extends BaseActivity {
             setEditextToEnabled(yearOutput, false);
             setEditextToEnabled(taxContribution, false);
             setEditextToEnabled(employmentPull, false);
-            setSpinnerToEnabled(spXmlx, false);
-            setSpinnerToEnabled(spCylb, false);
-            setSpinnerToEnabled(spXmbz, false);
+            setTextviewToEnabled(tvCylb, false);
             setSpinnerToEnabled(sp_Hzlb, false);
-            tvDate.setFocusable(false);
-            tvDate.setFocusableInTouchMode(false);
-            tvDate.setEnabled(false);
-            setSpinnerToEnabled(spCity, false);
+            setTextviewToEnabled(tvXmbz, false);
+            setTextviewToEnabled(tvDate, false);
+            setTextviewToEnabled(tvCity, false);
+            setTextviewToEnabled(tvXmlx, false);
             setEditextToEnabled(etDqjz, false);
             setEditextToEnabled(etTzzt, false);
         }
@@ -204,38 +197,34 @@ public class InformationEditorActivity extends BaseActivity {
         editext.setEnabled(t);
     }
 
-    //Editext设置不可以编辑
+    //Spinner设置不可以编辑
     public void setSpinnerToEnabled(Spinner Spinner, boolean t) {
         Spinner.setFocusable(t);
         Spinner.setFocusableInTouchMode(t);
         Spinner.setEnabled(t);
     }
 
+    //Textview设置不可以编辑
+    public void setTextviewToEnabled(TextView textView, boolean t) {
+        textView.setFocusable(t);
+        textView.setFocusableInTouchMode(t);
+        textView.setEnabled(t);
+    }
+
     //修改Spinner默认字体的大小与颜色
     private void changSpinnerText() {
-
-        mStringArraySpxmlx = getResources().getStringArray(R.array.xmlx);
-        mAdapterSpxmlx = new TestArrayAdapter(InformationEditorActivity.this, mStringArraySpxmlx, true);
-        spXmlx.setAdapter(mAdapterSpxmlx);
-
-        mStringArrayspXmbz = getResources().getStringArray(R.array.xmbz);
-        mAdapterspXmbz = new TestArrayAdapter(InformationEditorActivity.this, mStringArrayspXmbz, true);
-        spXmbz.setAdapter(mAdapterspXmbz);
-
         mStringArrayspHzlx = getResources().getStringArray(R.array.hzlb);
         mAdapterspHzlx = new TestArrayAdapter(InformationEditorActivity.this, mStringArrayspHzlx, true);
         sp_Hzlb.setAdapter(mAdapterspHzlx);
-
-        //设置城市
-        mStringArrayspCity = getResources().getStringArray(R.array.city);
-        mAdapterspCity = new TestArrayAdapter(InformationEditorActivity.this, mStringArrayspCity, true);
-        spCity.setAdapter(mAdapterspCity);
     }
 
 
     //项目信息回显
-    private String city3;
-    private String[] newCitys = new String[10];
+
+    private List<String> listString = new LinkedList<>();
+    private List<String> listXMLX = new LinkedList<>();
+    private List<String> listXMBZ = new LinkedList<>();
+    private List<String> listCYLB = new LinkedList<>();
 
     private void getDataFromSerVice(String project_id) {
         Map<String, String> map = new HashMap<>();
@@ -262,55 +251,70 @@ public class InformationEditorActivity extends BaseActivity {
                 //DateFormat.format("yyyy-MM-dd", response.getExpect_date())
                 tvDate.setText((CharSequence) response.getExpect_date());
 
-                //项目类型
-                if (response.getProject_type().equals("1")) {
-                    spXmlx.setSelection(0);
-                } else if (response.getProject_type().equals("2")) {
-                    spXmlx.setSelection(1);
-                } else if (response.getProject_type().equals("3")) {
-                    spXmlx.setSelection(2);
-                } else if (response.getProject_type().equals("4")) {
-                    spXmlx.setSelection(3);
-                } else if (response.getProject_type().equals("5")) {
-                    spXmlx.setSelection(4);
+                //项目类型   {"工业", "农业", "服务业", "旅游业", "其他"};
+                List<String> listxmlx = ListUtils.stringTolist(response.getProject_type());
+                for (String s : listxmlx) {
+                    if (s.equals("1")) {
+                        listXMLX.add("工业");
+                    } else if (s.equals("2")) {
+                        listXMLX.add("农业");
+                    } else if (s.equals("3")) {
+                        listXMLX.add("服务业");
+                    } else if (s.equals("4")) {
+                        listXMLX.add("旅游业");
+                    } else if (s.equals("5")) {
+                        listXMLX.add("其他");
+                    }
                 }
-                //所属产业
+                tvXmlx.setText(ListUtils.listToString(listXMLX));
+                //所属产业也是产业类别
+                List<String> listcylb = ListUtils.stringTolist(response.getIndustry());
                 if (sscyList != null && sscyList.size() > 0) {
-                    for (Sscy sscy : sscyList) {
-                        if (response.getIndustry().equals(sscy.getCategory_id())) {
-                            spCylb.setSelection(sscy.getSqe() - 1);
+                    for (int i = 0; i < listcylb.size(); i++) {
+                        for (Sscy sscy : sscyList) {
+                            if (sscy.getCategory_id().equals(listcylb.get(i))){
+                                listCYLB.add(sscy.getCategory_name());
+                            }
                         }
                     }
                 }
+                tvCylb.setText(ListUtils.listToString(listCYLB));
                 //所属城市
-                if (response.getColony().equals("1")) {
-                    spCity.setSelection(0);
-                } else if (response.getColony().equals("2")) {
-                    spCity.setSelection(1);
-                } else if (response.getColony().equals("3")) {
-                    spCity.setSelection(2);
-                } else if (response.getColony().equals("4")) {
-                    spCity.setSelection(3);
-                } else if (response.getColony().equals("5")) {
-                    mAdapterspCity = new TestArrayAdapter(InformationEditorActivity.this, StringArray(response.getPronotes()), true);
-                    spCity.setAdapter(mAdapterspCity);
-                    spCity.setSelection(5);
-                    city3 = response.getPronotes();
-                    newCitys = StringArray(response.getPronotes());
+                List<String> listString1 = ListUtils.stringTolist(response.getColony());
+                for (String s : listString1) {
+                    if (s.equals("1")) {
+                        listString.add("北京");
+                    } else if (s.equals("2")) {
+                        listString.add("天津");
+                    }
+                    if (s.equals("3")) {
+                        listString.add("河北");
+                    }
+                    if (s.equals("4")) {
+                        listString.add("上海");
+                    } else if (s.equals("5")) {
+                        listString.add(response.getPronotes());
+                    }
                 }
+                tvCity.setText(ListUtils.listToString(listString));
 
-                //项目备注
-                if (response.getNote().equals("1")) {
-                    spXmbz.setSelection(0);
-                } else if (response.getNote().equals("2")) {
-                    spXmbz.setSelection(1);
-                } else if (response.getNote().equals("3")) {
-                    spXmbz.setSelection(2);
-                } else if (response.getNote().equals("4")) {
-                    spXmbz.setSelection(3);
-                } else if (response.getNote().equals("5")) {
-                    spXmbz.setSelection(4);
+                //项目备注 "全球500强", "全国500强", "央企", "上市公司", "其他"
+                List<String> listxmbz = ListUtils.stringTolist(response.getNote());
+                for (String s : listxmbz) {
+                    if (s.equals("1")) {
+                        listXMBZ.add("全球500强");
+                    } else if (s.equals("2")) {
+                        listXMBZ.add("全国500强");
+                    } else if (s.equals("3")) {
+                        listXMBZ.add("央企");
+                    } else if (s.equals("4")) {
+                        listXMBZ.add("上市公司");
+                    } else if (s.equals("5")) {
+                        listXMBZ.add("其他");
+                    }
                 }
+                tvXmbz.setText(ListUtils.listToString(listXMBZ));
+                Log.i("lc",listXMBZ.toString());
                 //合作类别
                 if (response.getCategory().equals("1")) {
                     sp_Hzlb.setSelection(0);
@@ -330,84 +334,8 @@ public class InformationEditorActivity extends BaseActivity {
         App.getInstance().getHttpQueue().add(request);
     }
 
-    //在数组中增加一个元素
-    public String[] StringArray(String s) {
-        List<String> list = new ArrayList<String>();
-        for (int i = 0; i < mStringArrayspCity.length; i++) {
-            list.add(mStringArrayspCity[i]);
-        }
-        list.add(5, s);
-        String[] newStr = list.toArray(new String[1]); //返回一个包含所有对象的指定类型的数组
-        return newStr;
-    }
-
-
     //获取该页面editext的值与spinner所选中的值
     private void getSpinnerSelect() {
-
-        spXmlx.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String spxmlx = getResources().getStringArray(R.array.xmlx)[position];
-                if (spxmlx.equals("工业")) {
-                    xmlx1 = "1";
-                } else if (spxmlx.equals("农业")) {
-                    xmlx1 = "2";
-                } else if (spxmlx.equals("服务业")) {
-                    xmlx1 = "3";
-                } else if (spxmlx.equals("旅游业")) {
-                    xmlx1 = "4";
-                } else if (spxmlx.equals("其他")) {
-                    xmlx1 = "5";
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        spCylb.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (list != null && list.size() > 0) {
-                    String spcylb = list.get(position);
-                    for (Sscy sscy : sscyList) {
-                        if (spcylb.equals(sscy.getCategory_name())) {
-                            cylb1 = sscy.getCategory_id();
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        spXmbz.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String spxmbz = getResources().getStringArray(R.array.xmbz)[position];
-                if (spxmbz.equals("全球500强")) {
-                    xmbz1 = "1";
-                } else if (spxmbz.equals("全国500强")) {
-                    xmbz1 = "2";
-                } else if (spxmbz.equals("央企")) {
-                    xmbz1 = "3";
-                } else if (spxmbz.equals("上市公司")) {
-                    xmbz1 = "4";
-                } else if (spxmbz.equals("其他")) {
-                    xmbz1 = "5";
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         sp_Hzlb.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -445,7 +373,7 @@ public class InformationEditorActivity extends BaseActivity {
         }, showDate.get(Calendar.YEAR), showDate.get(Calendar.MONTH), showDate.get(Calendar.DAY_OF_MONTH)).show();
     }
 
-    @OnClick({R.id.iv_toolbar_back, R.id.tv_date, R.id.btn_save, R.id.btn_cancel})
+    @OnClick({R.id.iv_toolbar_back, R.id.tv_date, R.id.btn_save, R.id.btn_cancel, R.id.tv_city, R.id.tv_xmlx,R.id.tv_xmbz,R.id.tv_cylb})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_toolbar_back:
@@ -555,11 +483,22 @@ public class InformationEditorActivity extends BaseActivity {
                 //投资主体
                 investment_entity = etTzzt.getText().toString().trim();
                 date11 = tvDate.getText().toString().trim();
-                getCityText();
                 sendInfoToService();
                 break;
             case R.id.btn_cancel:
                 onBackPressedSupport();
+                break;
+            case R.id.tv_city:
+                creatDialog();
+                break;
+            case R.id.tv_xmlx:
+                creatDialogXMLX();
+                break;
+            case R.id.tv_xmbz:
+                creatDialogXMBZ();
+                break;
+            case R.id.tv_cylb:
+                creatDialogCYLB();
                 break;
         }
 
@@ -582,11 +521,6 @@ public class InformationEditorActivity extends BaseActivity {
                         list.add(sscy.getCategory_name());
                     }
                 }
-                if (list != null && list.size() > 0) {
-                    TestArrayAdapter adapter = new TestArrayAdapter(InformationEditorActivity.this, list, false);
-                    spCylb.setAdapter(adapter);
-                }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -606,7 +540,7 @@ public class InformationEditorActivity extends BaseActivity {
         map.put("current_progress", current_progress);
         map.put("project_type", xmlx1);
         map.put("industry", cylb1);
-        map.put("colony", city1);
+        map.put("colony", city);
         map.put("note", xmbz1);
         map.put("name", name1);
         map.put("phone", phone1);
@@ -625,7 +559,6 @@ public class InformationEditorActivity extends BaseActivity {
         map.put("product", "");
         map.put("situations", situations1);
         map.put("pronotes", (pronotes == null) ? "" : pronotes);
-
         GsonRequest<Success> request = new GsonRequest<Success>(Request.Method.POST, map, Url.InformationProjectEdit, Success.class, new Response.Listener<Success>() {
             @Override
             public void onResponse(Success response) {
@@ -645,65 +578,211 @@ public class InformationEditorActivity extends BaseActivity {
         App.getInstance().getHttpQueue().add(request);
     }
 
+    //创建选择城市的dialog
+    List<String> stringList = new LinkedList<>();
+    List<String> stringList1 = new LinkedList<>();
 
-    //信息编辑这里的城市编辑，如果客户没有编辑就传以下方法获取的值，如果客户编辑了就传onActivityResult中的city值。
-    private void getCityText() {
-        //获取城市的值
-        spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void creatDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(InformationEditorActivity.this);
+        builder.setTitle("项目属地选择");
+        final String[] hobbies = {"北京", "天津", "河北", "上海", "其他"};
+
+        builder.setMultiChoiceItems(hobbies, null, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (!StringUtils.isEmpty(city3)) {
-                    city1 = StringArray(city3)[position];
-                } else {
-                    if (newCitys != null) {
-                        city1 = StringArray(city3)[position];
-                    } else {
-                        city1 = getResources().getStringArray(R.array.city)[position];
-                    }
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (which == 4 && isChecked) {
+                    Intent intent = new Intent(InformationEditorActivity.this, SelectCityActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_PICK_CITY);
                 }
-                if (!city1.isEmpty()) {
-
-                    if (city1.equals("北京")) {
-                        city1 = "1";
-                    } else if (city1.equals("天津")) {
-                        city1 = "2";
-                    } else if (city1.equals("上海")) {
-                        city1 = "3";
-                    } else if (city1.equals("河北")) {
-                        city1 = "4";
-                    } else if (city1.equals("其他")) {
-                        Intent intent = new Intent(InformationEditorActivity.this, SelectCityActivity.class);
-                        startActivityForResult(intent, REQUEST_CODE_PICK_CITY);
-                    } else {
-                        city1 = "5";
-                        pronotes = city3;
-                    }
+                if (isChecked) {
+                    stringList.add(hobbies[which]);
                 }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+                if (!isChecked) {
+                    stringList.remove(hobbies[which]);
+                }
             }
         });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tvCity.setText(ListUtils.listToString(stringList));
+                //把这种字符串 北京,天津 改为 1,2
+                for (String s : stringList) {
+                    if (StringUtils.equals(s, "北京")) {
+                        stringList1.add("1");
+                    } else if (StringUtils.equals(s, "天津")) {
+                        stringList1.add("2");
+                    } else if (StringUtils.equals(s, "河北")) {
+                        stringList1.add("3");
+                    } else if (StringUtils.equals(s, "上海")) {
+                        stringList1.add("4");
+                    } else {
+                        stringList1.add("5");
+                    }
+                }
+                city = ListUtils.listToString(stringList1);
+                stringList.clear();
+                stringList1.clear();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK) {
             if (data != null) {
-                city3 = data.getStringExtra("cityname");
-                if (city3 != null) {
-                    city1 = "5";
-                    StringArray(city3)[5] = city3;
-                    mAdapterspCity = new TestArrayAdapter(InformationEditorActivity.this, StringArray(city3), true);
-                    spCity.setAdapter(mAdapterspCity);
-                    spCity.setSelection(5);
-                    pronotes = city3;
+                for (int i = 0; i < stringList.size(); i++) {
+                    if (stringList.get(i).equals("其他")) {
+                        stringList.remove(i);
+                        break;
+                    }
                 }
+                city1 = data.getStringExtra("cityname");
+                pronotes = city1;
+                stringList.add(city1);
             }
         }
     }
 
+    //创建选择项目类型的dialog
+    List<String> stringListXMLX = new LinkedList<>();
+    List<String> stringListXMLX1 = new LinkedList<>();
+    private void creatDialogXMLX() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(InformationEditorActivity.this);
+        builder.setTitle("项目类型");
+        final String[] hobbies = {"工业", "农业", "服务业", "旅游业", "其他"};
+        builder.setMultiChoiceItems(hobbies, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (isChecked) {
+                    stringListXMLX.add(hobbies[which]);
+                }
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tvXmlx.setText(ListUtils.listToString(stringListXMLX));
+                for (String s : stringListXMLX) {
+                    if (StringUtils.equals(s, "工业")) {
+                        stringListXMLX1.add("1");
+                    } else if (StringUtils.equals(s, "农业")) {
+                        stringListXMLX1.add("2");
+                    } else if (StringUtils.equals(s, "服务业")) {
+                        stringListXMLX1.add("3");
+                    } else if (StringUtils.equals(s, "旅游业")) {
+                        stringListXMLX1.add("4");
+                    } else {
+                        stringListXMLX1.add("5");
+                    }
+                }
+                xmlx1 = ListUtils.listToString(stringListXMLX1);
+                stringListXMLX.clear();
+                stringListXMLX1.clear();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    //创建选择项目类型的dialog
+    List<String> stringListXMBZ = new LinkedList<>();
+    List<String> stringListXMBZ1 = new LinkedList<>();
+
+    private void creatDialogXMBZ() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(InformationEditorActivity.this);
+        builder.setTitle("项目备注");
+        final String[] hobbies = {"全球500强", "全国500强", "央企", "上市公司", "其他"};
+        builder.setMultiChoiceItems(hobbies, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (isChecked) {
+                    stringListXMBZ.add(hobbies[which]);
+                }
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tvXmbz.setText(ListUtils.listToString(stringListXMBZ));
+                for (String s : stringListXMBZ) {
+                    if (StringUtils.equals(s, "全球500强")) {
+                        stringListXMBZ1.add("1");
+                    } else if (StringUtils.equals(s, "全国500强")) {
+                        stringListXMBZ1.add("2");
+                    } else if (StringUtils.equals(s, "央企")) {
+                        stringListXMBZ1.add("3");
+                    } else if (StringUtils.equals(s, "上市公司")) {
+                        stringListXMBZ1.add("4");
+                    }else if (StringUtils.equals(s,"其他")){
+                        stringListXMBZ1.add("5");
+                    }
+                }
+                xmbz1 = ListUtils.listToString(stringListXMBZ1);
+                stringListXMBZ.clear();
+                stringListXMBZ1.clear();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    //创建所属类别的dialog
+    List<String> stringListSSLB = new LinkedList<>();
+    List<String> stringListSSLB1 = new LinkedList<>();
+
+    private void creatDialogCYLB() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(InformationEditorActivity.this);
+        builder.setTitle("产业类别");
+        final String[] hobbies = ListUtils.listToStrings(list);
+
+        builder.setMultiChoiceItems(hobbies, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (isChecked) {
+                    stringListSSLB.add(hobbies[which]);
+                }
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tvCylb.setText(ListUtils.listToString(stringListSSLB));
+                for (int i = 0; i < stringListSSLB.size(); i++) {
+                    for (Sscy sscy : sscyList) {
+                        if (sscy.getCategory_name().equals(stringListSSLB.get(i))) {
+                            stringListSSLB1.add(sscy.getCategory_id());
+                        }
+                    }
+                }
+                cylb1 = ListUtils.listToString(stringListSSLB1);
+                stringListSSLB.clear();
+                stringListSSLB1.clear();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
 }
