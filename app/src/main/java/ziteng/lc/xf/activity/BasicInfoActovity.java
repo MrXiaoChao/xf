@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.blankj.utilcode.utils.StringUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ziteng.lc.xf.R;
 import ziteng.lc.xf.base.BaseActivity;

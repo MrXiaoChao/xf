@@ -60,7 +60,7 @@ public class WebViewActivity extends BaseActivity {
         webView = (WebView) findViewById(R.id.webView);
         //WebView加载web资源
         webView.loadUrl(url);
-        
+
         webView.requestFocusFromTouch();//支持获取手势焦点
         //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
         WebSettings setting = webView.getSettings();
